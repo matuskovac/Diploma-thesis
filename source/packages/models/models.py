@@ -21,6 +21,9 @@ def get_knn(count_neighbors=1, l=2):
     neigh = NearestNeighbors(n_neighbors=count_neighbors, p=l)
     return neigh
 
+def get_svm(kernel='sigmoid'):
+    svm = OneClassSVM(kernel=kernel)
+    return svm
 
 class RandomForestClassifierWithCoef(RandomForestClassifier):
     def fit(self, *args, **kwargs):
