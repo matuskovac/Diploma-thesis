@@ -19,11 +19,14 @@ df_raw_train = pd.read_csv(
 df_raw_val = pd.read_csv(path_to_featutes + "imputed/" + "val.csv", sep=',')
 df_raw_test = pd.read_csv(path_to_featutes + "imputed/" + "test.csv", sep=',')
 
+use = ['knn','svm'][0]
+if  use=='knn':
+    model = 'knn'
+    params = {'n': 1, 'p': 1}
 
-model = 'knn'
-params = {'n': 1, 'p': 1}
-# model = 'svm'
-# params = {'kernel':'poly'}
+elif use =='svm':
+    model = 'svm'
+    params = {'kernel':'poly'}
 
 predict_based_on_whole_pattern = True
 

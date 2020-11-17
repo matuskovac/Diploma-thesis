@@ -23,10 +23,14 @@ df_raw_test = pd.read_csv(path_to_featutes + "imputed/" + "test.csv", sep=',')
 
 predict_based_on_whole_pattern = True
 
-model = 'knn'
-params={'n':1,'p':1}
-# model = 'svm'
-# params = {'kernel':'poly'}
+use = ['knn','svm'][0]
+if  use=='knn':
+    model = 'knn'
+    params = {'n': 1, 'p': 1}
+
+elif use =='svm':
+    model = 'svm'
+    params = {'kernel':'poly'}
 
 selected_owners = ['Stevo']
 start = time.time()
