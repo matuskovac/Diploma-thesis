@@ -1,3 +1,6 @@
+import warnings
+warnings.filterwarnings('ignore')
+
 import itertools
 from statistics import mean
 

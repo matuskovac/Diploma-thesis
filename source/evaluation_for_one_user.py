@@ -22,15 +22,18 @@ df_raw_test = pd.read_csv(path_to_featutes + "imputed/" + "test.csv", sep=',')
 
 
 predict_based_on_whole_pattern = True
-start = time.time()
+
+model = 'knn'
+params={'n':1,'p':1}
+# model = 'svm'
+# params = {'kernel':'poly'}
+
 selected_owners = ['Stevo']
+start = time.time()
 df_train, df_val, df_test = split.adapt_dfs_to_users(
     df_raw_train, df_raw_val, df_raw_test, selected_owners, y_column, 0)
 
-knn = models.get_knn()
-knn.fit(df_train[x_columns])
-
-predicted_test = [np.mean(i) for i in knn.kneighbors(df_test[x_columns])[0]]
+predicted_train, predicted_test = models.use_model(model,[df_train, df_test], x_columns, params)
 
 ground_truth_test, predicted_test = postprocess.adapt_columns_for_evaluation(
     df_test[[y_column, 'id']], predicted_test, y_column, predict_based_on_whole_pattern)
