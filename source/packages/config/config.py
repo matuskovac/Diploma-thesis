@@ -1,5 +1,6 @@
 import pickle
 
+
 SEGMENT_COLUMN = 'segment'
 USER_COLUMN = 'user'
 USER_NAME_COLUMN = 'username'

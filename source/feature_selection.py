@@ -1,10 +1,12 @@
 import pickle
+
 import pandas as pd
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.feature_selection import RFE, RFECV
 
 from packages.config import config
 from packages.models.models import RandomForestClassifierWithCoef
+
 
 x_columns = config.X_COLUMNS
 y_column = config.Y_COLUMNS

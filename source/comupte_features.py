@@ -1,14 +1,11 @@
+from packages.processing import preprocess
+from packages.config import config
+from sklearn.preprocessing import LabelEncoder
+import pandas as pd
+import time
 import warnings
 
 warnings.filterwarnings('ignore')
-import time
-
-import pandas as pd
-from sklearn.preprocessing import LabelEncoder
-
-from packages.config import config
-from packages.processing import preprocess
-
 
 
 path_to_raw_data = config.PATH_TO_RAW_DATA

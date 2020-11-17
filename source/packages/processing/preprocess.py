@@ -1,6 +1,6 @@
-from behalearn.preprocessing import columns
-from behalearn.features import FeatureExtractor
 import numpy as np
+from behalearn.features import FeatureExtractor
+from behalearn.preprocessing import columns
 
 
 def get_columns_combinations(col_names, combinations=None):

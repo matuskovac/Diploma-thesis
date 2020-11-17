@@ -1,13 +1,16 @@
-from packages.notification import notificate
-from packages.processing import postprocess, split
-from packages.models import models
-from packages.evaluation import evaluation
-from packages.config import config
-import pandas as pd
-import numpy as np
-from statistics import mean
 import itertools
 import warnings
+from statistics import mean
+
+import numpy as np
+import pandas as pd
+
+from packages.config import config
+from packages.evaluation import evaluation
+from packages.models import models
+from packages.notification import notificate
+from packages.processing import postprocess, split
+
 warnings.filterwarnings('ignore')
 
 
@@ -40,8 +43,7 @@ elif use == 'svm':
     iterables = [all_kernels]
     for comb in itertools.product(*iterables):
         print(comb[0])
-        all_params_comb.append({"kernel":comb[0]})
-        
+        all_params_comb.append({"kernel": comb[0]})
 
 
 all_features_subset = selected_features_dict.keys()
@@ -66,7 +68,7 @@ for features_subset, predict_based_on_whole_pattern, kind_of_patten, params in i
 df_tuning = pd.DataFrame(rows, columns=[
                          "features_subset", "predict_based_on_whole_pattern", "kind_of_patten", "model", "params", "train_eer", "val_eer", "test_eer"])
 
-df_tuning.to_csv("../results/test.csv",
+df_tuning.to_csv("../results/tuning_result4.csv",
                  encoding='utf-8', index=False)
 
 

@@ -3,6 +3,7 @@ import pandas as pd
 from packages.config import config
 from packages.processing import postprocess, split
 
+
 compute_features_for_segment = config.COMPUTE_FEATURES_FOR_SEGMENT
 path_to_featutes = config.PATH_TO_FEATURES
 delete_nan_features = config.DELETE_NAN_FEATURES

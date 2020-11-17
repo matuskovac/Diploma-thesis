@@ -1,10 +1,13 @@
-from packages.processing import postprocess
-from packages.evaluation import evaluation
-from packages.config import config
-import pandas as pd
-import numpy as np
 import time
 import warnings
+
+import numpy as np
+import pandas as pd
+
+from packages.config import config
+from packages.evaluation import evaluation
+from packages.processing import postprocess
+
 warnings.filterwarnings('ignore')
 
 
@@ -19,14 +22,14 @@ df_raw_train = pd.read_csv(
 df_raw_val = pd.read_csv(path_to_featutes + "imputed/" + "val.csv", sep=',')
 df_raw_test = pd.read_csv(path_to_featutes + "imputed/" + "test.csv", sep=',')
 
-use = ['knn','svm'][0]
-if  use=='knn':
+use = ['knn', 'svm'][0]
+if use == 'knn':
     model = 'knn'
     params = {'n': 1, 'p': 1}
 
-elif use =='svm':
+elif use == 'svm':
     model = 'svm'
-    params = {'kernel':'poly'}
+    params = {'kernel': 'poly'}
 
 predict_based_on_whole_pattern = True
 
