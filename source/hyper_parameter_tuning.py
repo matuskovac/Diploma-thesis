@@ -24,14 +24,14 @@ df_raw_val = pd.read_csv(path_to_featutes + "imputed/" + "val.csv", sep=',')
 df_raw_test = pd.read_csv(path_to_featutes + "imputed/" + "test.csv", sep=',')
 
 
-use = ['knn', 'svm'][1]
+use = ['knn', 'svm', 'isolationF'][2]
 all_params_comb = []
 
 if use == 'knn':
     model = 'knn'
 
-    all_knn_l = list(range(1, 3))
-    all_knn_n_neighbors = list(range(1, 3))
+    all_knn_l = list(range(1, 5))
+    all_knn_n_neighbors = list(range(1, 5))
     iterables = [all_knn_l, all_knn_n_neighbors]
     for n, p in itertools.product(*iterables):
         all_params_comb.append({'n': n, 'p': p})
@@ -42,9 +42,16 @@ elif use == 'svm':
     all_kernels = ['linear', 'poly', 'rbf', 'sigmoid']
     iterables = [all_kernels]
     for comb in itertools.product(*iterables):
-        print(comb[0])
         all_params_comb.append({"kernel": comb[0]})
 
+
+elif use == 'isolationF':
+    model = 'ísolationForest'
+    all_n_estimators = list(range(0, 800, 100))
+    all_n_estimators[0] += 50
+    iterables = [all_n_estimators]
+    for comb in itertools.product(*iterables):
+        all_params_comb.append({"n_estimators": comb[0]})
 
 all_features_subset = selected_features_dict.keys()
 all_predict_based_on_whole_pattern = [True, False]

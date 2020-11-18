@@ -22,7 +22,7 @@ df_raw_train = pd.read_csv(
 df_raw_val = pd.read_csv(path_to_featutes + "imputed/" + "val.csv", sep=',')
 df_raw_test = pd.read_csv(path_to_featutes + "imputed/" + "test.csv", sep=',')
 
-use = ['knn', 'svm', 'isolationF'][2]
+use = ['knn', 'svm', 'isolationF'][0]
 if use == 'knn':
     model = 'knn'
     params = {'n': 1, 'p': 1}
@@ -36,7 +36,7 @@ elif use == 'isolationF':
     params = {'n_estimators': 500}
 
 predict_based_on_whole_pattern = True
-kind_of_patten = 1
+kind_of_patten = 0
 
 users_to_cv = df_raw_train[y_column].unique()
 
@@ -44,7 +44,8 @@ start = time.time()
 train_eer, val_eer, test_eer = evaluation.cross_validate(
     x_columns, y_column, df_raw_train, df_raw_val, df_raw_test, users_to_cv, model, params, predict_based_on_whole_pattern, kind_of_patten)
 
-
+end= time.time()
+print (end - start)
 print("TRAIN EER: " + str(train_eer))
 print("VAL EER: " + str(val_eer))
 print("TEST EER: " + str(test_eer))
