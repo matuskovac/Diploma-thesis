@@ -68,14 +68,14 @@ def get_eer(test_y_raw, tresholds, selected_owners):
     return int_pt.y
 
 
-def cross_validate(x_columns, y_column, df_raw_train, df_raw_val, df_raw_test, owners, model, params, predict_based_on_whole_pattern):
+def cross_validate(x_columns, y_column, df_raw_train, df_raw_val, df_raw_test, owners, model, params, predict_based_on_whole_pattern, kind_of_patten):
     test_eer_array = []
     val_eer_array = []
     train_eer_array = []
 
     for selected_owners in owners:
         df_train, df_val, df_test = split.adapt_dfs_to_users(
-            df_raw_train, df_raw_val, df_raw_test, selected_owners, y_column, 2)
+            df_raw_train, df_raw_val, df_raw_test, selected_owners, y_column, kind_of_patten)
 
         predicted_train, predicted_val, predicted_test = models.use_model(
             model, [df_train, df_val, df_test], x_columns, params)

@@ -59,7 +59,7 @@ for features_subset, predict_based_on_whole_pattern, kind_of_patten, params in i
     users_to_cv = df_raw_train[y_column].unique()
 
     train_eer, val_eer, test_eer = evaluation.cross_validate(
-        selected_features_dict[features_subset], y_column, df_raw_train, df_raw_val, df_raw_test, users_to_cv, model, params, predict_based_on_whole_pattern)
+        selected_features_dict[features_subset], y_column, df_raw_train, df_raw_val, df_raw_test, users_to_cv, model, params, predict_based_on_whole_pattern, kind_of_patten)
 
     rows.append([features_subset,
                  predict_based_on_whole_pattern, kind_of_patten, model, params, train_eer, val_eer, test_eer])

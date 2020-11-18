@@ -4,6 +4,7 @@ from sklearn.neighbors import NearestNeighbors
 from sklearn.svm import OneClassSVM
 from sklearn.ensemble import IsolationForest
 
+
 class RandomForestClassifierWithCoef(RandomForestClassifier):
     def fit(self, *args, **kwargs):
         super(RandomForestClassifierWithCoef, self).fit(*args, **kwargs)
@@ -29,13 +30,14 @@ def use_model(model, df_list, x_columns, params):
         for i in range(len(df_list)):
             pred = svm.score_samples(df_list[i][x_columns])
             predicted.append(pred)
-    
+
     elif model == 'ísolationForest':
-        clf = IsolationForest(n_estimators=params['n_estimators'], random_state=0)
+        clf = IsolationForest(
+            n_estimators=params['n_estimators'], random_state=0)
         clf.fit(df_list[0][x_columns])
 
         for i in range(len(df_list)):
-            pred =clf.score_samples(df_list[i][x_columns])
+            pred = clf.score_samples(df_list[i][x_columns])
             pred = list(map(abs, pred))
             predicted.append(pred)
 

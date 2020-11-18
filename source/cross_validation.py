@@ -36,12 +36,13 @@ elif use == 'isolationF':
     params = {'n_estimators': 500}
 
 predict_based_on_whole_pattern = True
+kind_of_patten = 1
 
 users_to_cv = df_raw_train[y_column].unique()
 
 start = time.time()
 train_eer, val_eer, test_eer = evaluation.cross_validate(
-    x_columns, y_column, df_raw_train, df_raw_val, df_raw_test, users_to_cv, model, params, predict_based_on_whole_pattern)
+    x_columns, y_column, df_raw_train, df_raw_val, df_raw_test, users_to_cv, model, params, predict_based_on_whole_pattern, kind_of_patten)
 
 
 print("TRAIN EER: " + str(train_eer))
