@@ -9,7 +9,7 @@ from packages.config import config
 from packages.evaluation import evaluation
 from packages.models import models
 from packages.notification import notificate
-from packages.processing import postprocess, split
+from packages.processing import postprocess, preprocess, split
 
 warnings.filterwarnings('ignore')
 
@@ -60,10 +60,11 @@ kind_of_patterns = [0, 1, 2]
 iterables = [all_features_subset,
              all_predict_based_on_whole_pattern, kind_of_patterns, all_params_comb]
 
+users_to_cv = preprocess.get_combinations_for_cv(
+    df_raw_train[y_column].unique(), 2)
 
 rows = []
 for features_subset, predict_based_on_whole_pattern, kind_of_patten, params in itertools.product(*iterables):
-    users_to_cv = df_raw_train[y_column].unique()
 
     train_eer, val_eer, test_eer = evaluation.cross_validate(
         selected_features_dict[features_subset], y_column, df_raw_train, df_raw_val, df_raw_test, users_to_cv, model, params, predict_based_on_whole_pattern, kind_of_patten)
