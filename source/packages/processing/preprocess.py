@@ -80,8 +80,8 @@ def normalize_columns_names(df):
 
 
 def get_combinations_for_cv(list, i_comb):
-    random.seed(0)
-    random.shuffle(list)
+    # random.seed(0)
+    # random.shuffle(list)
     if i_comb == 1:
         return list
 

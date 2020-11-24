@@ -37,7 +37,7 @@ scale_function = 'use_minmax_scaler_list'
 scale_function = getattr(postprocess, scale_function)
 function = getattr(np, fun)
 
-users_to_cv = preprocess.get_combinations_for_cv(df_raw_train[y_column].unique(), 1)
+users_to_cv = preprocess.get_combinations_for_cv(df_raw_train[y_column].unique(), 4)
 #print(users_to_cv)
 
 

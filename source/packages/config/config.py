@@ -24,7 +24,7 @@ MODELS_DICT = {
     'knn': {'name': 'knn', 'params': {'n': 2, 'p': 1}, 'x_columns': '10_RandomForestClassifierWithCoef(min_samples_leaf=5, n_estimators=500, n_jobs=-1)'},
     'svm': {'name': 'svm', 'params': {'kernel': 'rbf'}, 'x_columns': '20_LogisticRegression()'},
     'isolationF': {'name': 'ísolationForest', 'params': {'n_estimators': 300}, 'x_columns': '10_RandomForestClassifierWithCoef(min_samples_leaf=5, n_estimators=500, n_jobs=-1)'},
-    'autoencoder': {'name': 'autoencoder', 'params': {'hidden_neurons': [352, 225, 100, 5, 100, 225, 352]}, 'x_columns': '0'}
+    'autoencoder': {'name': 'autoencoder', 'params': {'hidden_neurons': [10, 2, 2, 10]}, 'x_columns': '10_RandomForestClassifierWithCoef(min_samples_leaf=5, n_estimators=500, n_jobs=-1)'}
 }
 
 Y_COLUMNS = USER_NAME_COLUMN

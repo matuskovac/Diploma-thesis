@@ -42,7 +42,7 @@ def use_model(model, df_list, x_columns, params):
             predicted.append(pred)
 
     elif model == 'autoencoder':
-        clf = AutoEncoder(hidden_neurons = [352, 225, 100, 5, 100, 225, 352], verbose=0)
+        clf = AutoEncoder(hidden_neurons=params['hidden_neurons'], verbose=0)
         clf.fit(df_list[0][x_columns])
         for i in range(len(df_list)):
             pred = clf.decision_function(df_list[i][x_columns])
