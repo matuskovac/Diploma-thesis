@@ -1,8 +1,8 @@
 import numpy as np
-from sklearn.ensemble import RandomForestClassifier
+from pyod.models.auto_encoder import AutoEncoder
+from sklearn.ensemble import IsolationForest, RandomForestClassifier
 from sklearn.neighbors import NearestNeighbors
 from sklearn.svm import OneClassSVM
-from sklearn.ensemble import IsolationForest
 
 
 class RandomForestClassifierWithCoef(RandomForestClassifier):
@@ -39,6 +39,13 @@ def use_model(model, df_list, x_columns, params):
         for i in range(len(df_list)):
             pred = clf.score_samples(df_list[i][x_columns])
             pred = list(map(abs, pred))
+            predicted.append(pred)
+
+    elif model == 'autoencoder':
+        clf = AutoEncoder(hidden_neurons = [352, 225, 100, 5, 100, 225, 352], verbose=0)
+        clf.fit(df_list[0][x_columns])
+        for i in range(len(df_list)):
+            pred = clf.decision_function(df_list[i][x_columns])
             predicted.append(pred)
 
     return predicted

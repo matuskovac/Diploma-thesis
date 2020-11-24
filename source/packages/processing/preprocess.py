@@ -1,4 +1,5 @@
 import numpy as np
+import random
 from behalearn.features import FeatureExtractor
 from behalearn.preprocessing import columns
 
@@ -79,6 +80,8 @@ def normalize_columns_names(df):
 
 
 def get_combinations_for_cv(list, i_comb):
+    random.seed(0)
+    random.shuffle(list)
     if i_comb == 1:
         return list
 

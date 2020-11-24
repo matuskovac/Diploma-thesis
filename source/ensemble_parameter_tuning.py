@@ -37,7 +37,7 @@ all_fun = ['max', 'min', 'sum', 'prod']
 all_scale_functions = ['use_standard_scaler_list', 'use_minmax_scaler_list']
 
 users_to_cv = preprocess.get_combinations_for_cv(
-    df_raw_train[y_column].unique(), 1)
+    df_raw_train[y_column].unique(), 4)
 
 iterables = [all_ensemble_based_on_segments, all_fun, all_scale_functions]
 
@@ -58,7 +58,7 @@ for ensemble_based_on_segments, fun, scale in itertools.product(*iterables):
 df_tuning = pd.DataFrame(rows, columns=[
                          "norm", "model", "apply_on_segments", "function", "train_eer", "val_eer", "test_eer"])
 
-df_tuning.to_csv("../results/ensemble_1_if_knn.csv",
+df_tuning.to_csv("../results/ensemble_4_if_knn.csv",
                  encoding='utf-8', index=False)
 
 

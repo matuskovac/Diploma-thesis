@@ -24,7 +24,7 @@ df_raw_test = pd.read_csv(path_to_featutes + "imputed/" + "test.csv", sep=',')
 
 predict_based_on_whole_pattern = True
 
-use = ['knn', 'svm', 'isolationF'][2]
+use = ['knn', 'svm', 'isolationF', 'autoencoder'][3]
 model=models_dict[use]
 
 
