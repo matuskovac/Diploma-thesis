@@ -60,7 +60,7 @@ kind_of_patterns = [0, 1, 2]
 iterables = [all_features_subset,
              all_predict_based_on_whole_pattern, kind_of_patterns, all_params_comb]
 
-users_to_cv = preprocess.get_combinations_for_cv(
+users_to_cv = postprocess.get_combinations_for_cv(
     df_raw_train[y_column].unique(), 2)
 
 rows = []

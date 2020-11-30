@@ -25,7 +25,7 @@ df_raw_test = pd.read_csv(path_to_featutes + "imputed/" + "test.csv", sep=',')
 
 
 options = pd.Series(['knn', 'svm', 'isolationF', 'autoencoder'])
-selected = [3]
+selected = [2]
 models_to_use = list(options[selected])
 
 predict_based_on_whole_pattern = True
@@ -37,9 +37,7 @@ scale_function = 'use_minmax_scaler_list'
 scale_function = getattr(postprocess, scale_function)
 function = getattr(np, fun)
 
-users_to_cv = preprocess.get_combinations_for_cv(df_raw_train[y_column].unique(), 4)
-#print(users_to_cv)
-
+users_to_cv = postprocess.get_combinations_for_cv(df_raw_train[y_column].unique(), 4)
 
 start = time.time()
 train_eer, val_eer, test_eer = evaluation.cross_validate_with_ensemble(

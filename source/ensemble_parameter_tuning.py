@@ -36,7 +36,7 @@ all_ensemble_based_on_segments = [True, False]
 all_fun = ['max', 'min', 'sum', 'prod']
 all_scale_functions = ['use_standard_scaler_list', 'use_minmax_scaler_list']
 
-users_to_cv = preprocess.get_combinations_for_cv(
+users_to_cv = postprocess.get_combinations_for_cv(
     df_raw_train[y_column].unique(), 4)
 
 iterables = [all_ensemble_based_on_segments, all_fun, all_scale_functions]
