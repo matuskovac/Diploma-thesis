@@ -24,24 +24,25 @@ df_raw_val = pd.read_csv(path_to_featutes + "imputed/" + "val.csv", sep=',')
 df_raw_test = pd.read_csv(path_to_featutes + "imputed/" + "test.csv", sep=',')
 
 
-options = pd.Series(['knn', 'svm', 'isolationF', 'autoencoder'])
-selected = [2]
-models_to_use = list(options[selected])
+options = ['knn', 'svm', 'isolationF', 'autoencoder']
+selected = 2
+model_to_use = options[selected]
 
 predict_based_on_whole_pattern = True
 kind_of_patten = 2
 ensemble_based_on_segments = False
-fun ='max'
-# ['use_standard_scaler_list', 'use_minmax_scaler_list']
-scale_function = 'use_minmax_scaler_list'
-scale_function = getattr(postprocess, scale_function)
-function = getattr(np, fun)
 
-users_to_cv = postprocess.get_combinations_for_cv(df_raw_train[y_column].unique(), 2)
+ensemble_based_on_users = True
+function_to_ensemble_users = 'max'
+
+function_to_ensemble_users = getattr(np, function_to_ensemble_users)
+
+users_to_cv = postprocess.get_combinations_for_cv(
+    df_raw_train[y_column].unique(), 2)
 
 start = time.time()
-train_eer, val_eer, test_eer = evaluation.cross_validate_with_ensemble(
-    models_dict, models_to_use,selected_features_dict , y_column, df_raw_train, df_raw_val, df_raw_test, users_to_cv, predict_based_on_whole_pattern, kind_of_patten, ensemble_based_on_segments, function, scale_function)
+train_eer, val_eer, test_eer = evaluation.cross_validate_with_ensemble3(
+    models_dict, model_to_use, selected_features_dict, y_column, df_raw_train, df_raw_val, df_raw_test, users_to_cv, predict_based_on_whole_pattern, kind_of_patten, ensemble_based_on_segments, ensemble_based_on_users, function_to_ensemble_users)
 
 end = time.time()
 print(end - start)
