@@ -62,7 +62,7 @@ for count_of_owners in range(1, 5):
 
 
 df_tuning = pd.DataFrame(rows, columns=[
-                         "norm", "model", "apply_on_segments", "count_of_owners", "function", "train_eer", "val_eer", "test_eer"])
+                         "normalization", "model", "apply_on_segments", "count_of_owners", "function", "train_eer", "val_eer", "test_eer"])
 
 df_tuning.to_csv("../results/ensemble_models.csv",
                  encoding='utf-8', index=False)
