@@ -216,7 +216,7 @@ def cross_validate_with_ensemble3(models_dict, model_to_use, selected_features_d
             predicted_tests_models = [
                 list(function_to_ensemble_users(x, axis=0))]
 
-        for i in range(len(predicted_trains_models)):
+        for i in range(len(predicted_vals_models)):
             # ground_truth_train, predicted_trains_models[i] = postprocess.adapt_columns_for_evaluation(
             #     df_train[[y_column, 'id']], predicted_trains_models[i], y_column, predict_based_on_whole_pattern)
 
