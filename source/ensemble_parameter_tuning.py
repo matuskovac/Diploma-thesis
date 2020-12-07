@@ -38,27 +38,26 @@ kind_of_patten = 2
 all_ensemble_based_on_segments = [True, False]
 all_fun = ['max', 'min', 'sum', 'prod']
 all_scale_functions = ['use_standard_scaler_list', 'use_minmax_scaler_list']
+all_count_of_owners=list(range(1,5))
 
-
-iterables = [all_comb_models, all_ensemble_based_on_segments,
+iterables = [all_count_of_owners, all_comb_models, all_ensemble_based_on_segments,
              all_fun, all_scale_functions]
 
 rows = []
-for count_of_owners in range(1, 5):
+
+for count_of_owners, models_to_use, ensemble_based_on_segments, fun, scale in itertools.product(*iterables):
     users_to_cv = postprocess.get_combinations_for_cv(
         df_raw_train[y_column].unique(), count_of_owners)
 
-    for models_to_use, ensemble_based_on_segments, fun, scale in itertools.product(*iterables):
+    ensemble_function = getattr(np, fun)
+    scale_function = getattr(postprocess, scale)
 
-        ensemble_function = getattr(np, fun)
-        scale_function = getattr(postprocess, scale)
+    train_eer, val_eer, test_eer = evaluation.cross_validate_with_ensemble(
+        models_dict, models_to_use, selected_features_dict, y_column, df_raw_train, df_raw_val, df_raw_test, users_to_cv, predict_based_on_whole_pattern, kind_of_patten, ensemble_based_on_segments, ensemble_function, scale_function)
 
-        train_eer, val_eer, test_eer = evaluation.cross_validate_with_ensemble(
-            models_dict, models_to_use, selected_features_dict, y_column, df_raw_train, df_raw_val, df_raw_test, users_to_cv, predict_based_on_whole_pattern, kind_of_patten, ensemble_based_on_segments, ensemble_function, scale_function)
-
-        rows.append([scale.split('_')[1], '_'.join(models_to_use),
-                     ensemble_based_on_segments, count_of_owners, fun, train_eer, val_eer, test_eer])
-        print(len(rows))
+    rows.append([scale.split('_')[1], '_'.join(models_to_use),
+                    ensemble_based_on_segments, count_of_owners, fun, train_eer, val_eer, test_eer])
+    print(len(rows))
 
 
 df_tuning = pd.DataFrame(rows, columns=[
