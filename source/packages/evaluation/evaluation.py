@@ -57,16 +57,16 @@ def get_eer(test_y_raw, tresholds, selected_owners):
         fmr_array.append(fmr_score(test_y, predicted_y))
         fnmr_array.append(fnmr_score(test_y, predicted_y))
 
-    if(all(x == 0.0 or x == 1.0 for x in tresholds)):
-        return 0
-
-    
     line1 = LineString(list(zip(tresholds, fmr_array)))
     line2 = LineString(list(zip(tresholds, fnmr_array)))
     int_pt = line1.intersection(line2)
-
-    return int_pt.y
-
+    
+    if hasattr(int_pt, 'y'):
+        result = int_pt.y
+    else:
+        result = 1
+    
+    return result
 
 def cross_validate(x_columns, y_column, df_raw_train, df_raw_val, df_raw_test, owners, model, params, predict_based_on_whole_pattern, kind_of_patten):
 

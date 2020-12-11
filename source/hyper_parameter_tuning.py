@@ -55,15 +55,15 @@ elif use == 'isolationF':
 
 elif use == 'lsanomaly':
     model = 'lsanomaly'
-    all_sigma = [1, 2, 3]
-    all_rho = [0.1, 1, 10]
+    all_sigma = [0.5, 1, 2, 3]
+    all_rho = [0.01, 0.1, 1, 10]
     iterables = [all_sigma, all_rho]
     for sigma, rho in itertools.product(*iterables):
         all_params_comb.append({'sigma': sigma, 'rho': rho})
 
 all_features_subset = selected_features_dict.keys()
-all_predict_based_on_whole_pattern = [True, False]
-kind_of_patterns = [0, 1, 2]
+all_predict_based_on_whole_pattern = [True]
+kind_of_patterns = [2]
 
 iterables = [all_features_subset,
              all_predict_based_on_whole_pattern, kind_of_patterns, all_params_comb]
