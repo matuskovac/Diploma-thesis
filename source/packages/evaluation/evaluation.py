@@ -113,6 +113,8 @@ def cross_validate_with_ensemble(models_dict, models_to_use, selected_features_d
         df_train, df_val, df_test = split.adapt_dfs_to_users(
             df_raw_train, df_raw_val, df_raw_test, selected_owners, y_column, kind_of_patten)
 
+        if df_train.empty:
+            continue
         predicted_trains = []
         predicted_vals = []
         predicted_tests = []
@@ -189,7 +191,8 @@ def cross_validate_with_ensemble3(models_dict, model_to_use, selected_features_d
     for selected_owners in owners:
         df_train, df_val, df_test = split.adapt_dfs_to_users(
             df_raw_train, df_raw_val, df_raw_test, selected_owners, y_column, kind_of_patten)
-
+        if df_train.empty:
+            continue
         df_trains = split_by_owners(
             df_train, y_column, ensemble_based_on_users)
 
