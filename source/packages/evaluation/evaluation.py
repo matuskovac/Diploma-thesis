@@ -77,7 +77,9 @@ def cross_validate(x_columns, y_column, df_raw_train, df_raw_val, df_raw_test, o
     for selected_owners in owners:
         df_train, df_val, df_test = split.adapt_dfs_to_users(
             df_raw_train, df_raw_val, df_raw_test, selected_owners, y_column, kind_of_patten)
-
+            
+        if df_train.empty:
+            continue
         predicted_train, predicted_val, predicted_test = models.use_model(
             model, [df_train, df_val, df_test], x_columns, params)
 
