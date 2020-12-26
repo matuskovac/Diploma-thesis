@@ -12,6 +12,7 @@ PATH_TO_FEATURES = "../login_features/" + \
     ("segments" if COMPUTE_FEATURES_FOR_SEGMENT else "paterns") + \
     ("" if DELETE_NAN_FEATURES else "_nan") + "/"
 
+
 def get_columns_to_identify_features():
     columns_to_identify_features = [
         'id', 'pattern_id', 'device', 'scenario', USER_NAME_COLUMN, USER_COLUMN]
@@ -20,8 +21,7 @@ def get_columns_to_identify_features():
     return columns_to_identify_features
 
 
-
-#settings for segment based predictions
+# settings for segment based predictions
 MODELS_DICT1 = {
     'knn': {'name': 'knn', 'params': {'n': 2, 'p': 1}, 'x_columns': '10_RandomForestClassifierWithCoef(min_samples_leaf=5, n_estimators=500, n_jobs=-1)'},
     'svm': {'name': 'svm', 'params': {'kernel': 'rbf'}, 'x_columns': '20_LogisticRegression()'},
@@ -30,7 +30,7 @@ MODELS_DICT1 = {
     'lsanomaly': {'name': 'lsanomaly', 'params': {'sigma': 6, 'rho': 0.01}, 'x_columns': '50_RandomForestClassifierWithCoef(min_samples_leaf=5, n_estimators=500, n_jobs=-1)'}
 }
 
-#settings for whole pattern
+# settings for whole pattern
 MODELS_DICT2 = {
     'knn': {'name': 'knn', 'params': {'n': 2, 'p': 2}, 'x_columns': '20_RandomForestClassifierWithCoef(min_samples_leaf=5, n_estimators=500, n_jobs=-1)'},
     'svm': {'name': 'svm', 'params': {'kernel': 'rbf'}, 'x_columns': '20_LogisticRegression()'},
@@ -38,18 +38,19 @@ MODELS_DICT2 = {
     'autoencoder': {'name': 'autoencoder', 'params': {'hidden_neurons': [20, 10, 3, 10, 20]}, 'x_columns': '20_RandomForestClassifierWithCoef(min_samples_leaf=5, n_estimators=500, n_jobs=-1)'},
     'lsanomaly': {'name': 'lsanomaly', 'params': {'sigma': 2, 'rho': 0.01}, 'x_columns': '10_RandomForestClassifierWithCoef(min_samples_leaf=5, n_estimators=500, n_jobs=-1)'}
 }
-MODELS_DICT=  (MODELS_DICT1 if COMPUTE_FEATURES_FOR_SEGMENT else MODELS_DICT2)
+MODELS_DICT = (MODELS_DICT1 if COMPUTE_FEATURES_FOR_SEGMENT else MODELS_DICT2)
 
 Y_COLUMNS = USER_NAME_COLUMN
 
-file = open("./packages/config/selected_features.pickle",'rb')
+file = open("./packages/config/selected_features.pickle", 'rb')
 SELECTED_FEATURES_DICT1 = pickle.load(file)
 file.close()
 
-file = open("./packages/config/selected_features2.pickle",'rb')
+file = open("./packages/config/selected_features2.pickle", 'rb')
 SELECTED_FEATURES_DICT2 = pickle.load(file)
 file.close()
 
 
-SELECTED_FEATURES_DICT =  (SELECTED_FEATURES_DICT1 if COMPUTE_FEATURES_FOR_SEGMENT else SELECTED_FEATURES_DICT2)
+SELECTED_FEATURES_DICT = (
+    SELECTED_FEATURES_DICT1 if COMPUTE_FEATURES_FOR_SEGMENT else SELECTED_FEATURES_DICT2)
 X_COLUMNS = SELECTED_FEATURES_DICT['0']
