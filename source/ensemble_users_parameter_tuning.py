@@ -35,19 +35,16 @@ all_ensemble_based_on_segments = [True, False]
 all_ensemble_based_on_users = [True]
 all_functions_to_ensemble_users = ['max', 'min', 'sum', 'prod']
 
-users_to_cv = postprocess.get_combinations_for_cv(
-    df_raw_train[y_column].unique(), 4)
 
 iterables = [all_models, all_ensemble_based_on_users,
              all_ensemble_based_on_segments, all_functions_to_ensemble_users]
 
 rows = []
-for count_of_owners in range(1, 5):
+for count_of_owners in range(2, 5):
     users_to_cv = postprocess.get_combinations_for_cv(
         df_raw_train[y_column].unique(), count_of_owners)
 
     for model_to_use, ensemble_based_on_users, ensemble_based_on_segments,  function_to_ensemble_users_raw in itertools.product(*iterables):
-
         function_to_ensemble_users = getattr(
             np, function_to_ensemble_users_raw)
 
@@ -60,7 +57,7 @@ for count_of_owners in range(1, 5):
 
 
 df_tuning = pd.DataFrame(rows, columns=[
-    "model", "ensemble_based_on_users", "ensemble_based_on_segments", "count_of_owners", "function_to_users", "train_eer", "val_eer", "test_eer"])
+    "model", "ensemble_based_on_users", "count_of_owners", "ensemble_based_on_segments", "function_to_users", "train_eer", "val_eer", "test_eer"])
 
 df_tuning.to_csv("../results/ensemble_users.csv",
                  encoding='utf-8', index=False)

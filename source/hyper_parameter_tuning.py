@@ -24,7 +24,7 @@ df_raw_val = pd.read_csv(path_to_featutes + "imputed/" + "val.csv", sep=',')
 df_raw_test = pd.read_csv(path_to_featutes + "imputed/" + "test.csv", sep=',')
 
 
-use = ['knn', 'svm', 'isolationF'][2]
+use = ['knn', 'svm', 'isolationF','lsanomaly'][3]
 all_params_comb = []
 
 if use == 'knn':
@@ -53,15 +53,23 @@ elif use == 'isolationF':
     for comb in itertools.product(*iterables):
         all_params_comb.append({"n_estimators": comb[0]})
 
+elif use == 'lsanomaly':
+    model = 'lsanomaly'
+    all_sigma = [0.5, 1, 2, 3]
+    all_rho = [0.01, 0.1, 1, 10]
+    iterables = [all_sigma, all_rho]
+    for sigma, rho in itertools.product(*iterables):
+        all_params_comb.append({'sigma': sigma, 'rho': rho})
+
 all_features_subset = selected_features_dict.keys()
-all_predict_based_on_whole_pattern = [True, False]
-kind_of_patterns = [0, 1, 2]
+all_predict_based_on_whole_pattern = [True]
+kind_of_patterns = [2]
 
 iterables = [all_features_subset,
              all_predict_based_on_whole_pattern, kind_of_patterns, all_params_comb]
 
 users_to_cv = postprocess.get_combinations_for_cv(
-    df_raw_train[y_column].unique(), 2)
+    df_raw_train[y_column].unique(), 1)
 
 rows = []
 for features_subset, predict_based_on_whole_pattern, kind_of_patten, params in itertools.product(*iterables):
@@ -76,7 +84,7 @@ for features_subset, predict_based_on_whole_pattern, kind_of_patten, params in i
 df_tuning = pd.DataFrame(rows, columns=[
                          "features_subset", "predict_based_on_whole_pattern", "kind_of_patten", "model", "params", "train_eer", "val_eer", "test_eer"])
 
-df_tuning.to_csv("../results/tuning_result4.csv",
+df_tuning.to_csv("../results/tuning_result_lsa.csv",
                  encoding='utf-8', index=False)
 
 

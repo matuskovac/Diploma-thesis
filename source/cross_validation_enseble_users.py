@@ -24,21 +24,21 @@ df_raw_val = pd.read_csv(path_to_featutes + "imputed/" + "val.csv", sep=',')
 df_raw_test = pd.read_csv(path_to_featutes + "imputed/" + "test.csv", sep=',')
 
 
-options = ['knn', 'svm', 'isolationF', 'autoencoder']
-selected = 2
+options = ['knn', 'svm', 'isolationF', 'autoencoder', 'lsanomaly']
+selected = 4
 model_to_use = options[selected]
 
 predict_based_on_whole_pattern = True
 kind_of_patten = 2
 ensemble_based_on_segments = False
 
-ensemble_based_on_users = True
+ensemble_based_on_users = False
 function_to_ensemble_users = 'max'
 
 function_to_ensemble_users = getattr(np, function_to_ensemble_users)
 
 users_to_cv = postprocess.get_combinations_for_cv(
-    df_raw_train[y_column].unique(), 2)
+    df_raw_train[y_column].unique(), 1)
 
 start = time.time()
 train_eer, val_eer, test_eer = evaluation.cross_validate_with_ensemble3(

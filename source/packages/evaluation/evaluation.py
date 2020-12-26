@@ -57,16 +57,16 @@ def get_eer(test_y_raw, tresholds, selected_owners):
         fmr_array.append(fmr_score(test_y, predicted_y))
         fnmr_array.append(fnmr_score(test_y, predicted_y))
 
-    if(all(x == 0.0 for x in tresholds)):
-        return 0
-
     line1 = LineString(list(zip(tresholds, fmr_array)))
     line2 = LineString(list(zip(tresholds, fnmr_array)))
-
     int_pt = line1.intersection(line2)
-
-    return int_pt.y
-
+    
+    if hasattr(int_pt, 'y'):
+        result = int_pt.y
+    else:
+        result = 1
+    
+    return result
 
 def cross_validate(x_columns, y_column, df_raw_train, df_raw_val, df_raw_test, owners, model, params, predict_based_on_whole_pattern, kind_of_patten):
 
@@ -77,7 +77,9 @@ def cross_validate(x_columns, y_column, df_raw_train, df_raw_val, df_raw_test, o
     for selected_owners in owners:
         df_train, df_val, df_test = split.adapt_dfs_to_users(
             df_raw_train, df_raw_val, df_raw_test, selected_owners, y_column, kind_of_patten)
-
+            
+        if df_train.empty:
+            continue
         predicted_train, predicted_val, predicted_test = models.use_model(
             model, [df_train, df_val, df_test], x_columns, params)
 
@@ -113,6 +115,8 @@ def cross_validate_with_ensemble(models_dict, models_to_use, selected_features_d
         df_train, df_val, df_test = split.adapt_dfs_to_users(
             df_raw_train, df_raw_val, df_raw_test, selected_owners, y_column, kind_of_patten)
 
+        if df_train.empty:
+            continue
         predicted_trains = []
         predicted_vals = []
         predicted_tests = []
@@ -189,7 +193,8 @@ def cross_validate_with_ensemble3(models_dict, model_to_use, selected_features_d
     for selected_owners in owners:
         df_train, df_val, df_test = split.adapt_dfs_to_users(
             df_raw_train, df_raw_val, df_raw_test, selected_owners, y_column, kind_of_patten)
-
+        if df_train.empty:
+            continue
         df_trains = split_by_owners(
             df_train, y_column, ensemble_based_on_users)
 
@@ -216,7 +221,7 @@ def cross_validate_with_ensemble3(models_dict, model_to_use, selected_features_d
             predicted_tests_models = [
                 list(function_to_ensemble_users(x, axis=0))]
 
-        for i in range(len(predicted_trains_models)):
+        for i in range(len(predicted_vals_models)):
             # ground_truth_train, predicted_trains_models[i] = postprocess.adapt_columns_for_evaluation(
             #     df_train[[y_column, 'id']], predicted_trains_models[i], y_column, predict_based_on_whole_pattern)
 

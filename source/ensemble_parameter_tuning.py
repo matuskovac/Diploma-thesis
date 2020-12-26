@@ -26,23 +26,28 @@ df_raw_val = pd.read_csv(path_to_featutes + "imputed/" + "val.csv", sep=',')
 df_raw_test = pd.read_csv(path_to_featutes + "imputed/" + "test.csv", sep=',')
 
 
-options = pd.Series(['knn', 'svm', 'isolationF'])
-selected = [0,2]
-models_to_use = list(options[selected])
+models = ['knn', 'isolationF', 'autoencoder']
+
+all_comb_models = []
+for i in range(2, len(models)+1):
+    comb = list(itertools.combinations(models, i))
+    all_comb_models += [list(elem) for elem in comb]
 
 predict_based_on_whole_pattern = True
 kind_of_patten = 2
 all_ensemble_based_on_segments = [True, False]
 all_fun = ['max', 'min', 'sum', 'prod']
 all_scale_functions = ['use_standard_scaler_list', 'use_minmax_scaler_list']
+all_count_of_owners=list(range(1,5))
 
-users_to_cv = postprocess.get_combinations_for_cv(
-    df_raw_train[y_column].unique(), 4)
-
-iterables = [all_ensemble_based_on_segments, all_fun, all_scale_functions]
+iterables = [all_count_of_owners, all_comb_models, all_ensemble_based_on_segments,
+             all_fun, all_scale_functions]
 
 rows = []
-for ensemble_based_on_segments, fun, scale in itertools.product(*iterables):
+
+for count_of_owners, models_to_use, ensemble_based_on_segments, fun, scale in itertools.product(*iterables):
+    users_to_cv = postprocess.get_combinations_for_cv(
+        df_raw_train[y_column].unique(), count_of_owners)
 
     ensemble_function = getattr(np, fun)
     scale_function = getattr(postprocess, scale)
@@ -50,15 +55,15 @@ for ensemble_based_on_segments, fun, scale in itertools.product(*iterables):
     train_eer, val_eer, test_eer = evaluation.cross_validate_with_ensemble(
         models_dict, models_to_use, selected_features_dict, y_column, df_raw_train, df_raw_val, df_raw_test, users_to_cv, predict_based_on_whole_pattern, kind_of_patten, ensemble_based_on_segments, ensemble_function, scale_function)
 
-    rows.append([scale.split('_')[1], '_'.join(list(options[i] for i in selected)),
-                 ensemble_based_on_segments, fun, train_eer, val_eer, test_eer])
+    rows.append([scale.split('_')[1], '_'.join(models_to_use),
+                    ensemble_based_on_segments, count_of_owners, fun, train_eer, val_eer, test_eer])
     print(len(rows))
 
 
 df_tuning = pd.DataFrame(rows, columns=[
-                         "norm", "model", "apply_on_segments", "function", "train_eer", "val_eer", "test_eer"])
+                         "normalization", "model", "apply_on_segments", "count_of_owners", "function", "train_eer", "val_eer", "test_eer"])
 
-df_tuning.to_csv("../results/ensemble_4_if_knn.csv",
+df_tuning.to_csv("../results/ensemble_models.csv",
                  encoding='utf-8', index=False)
 
 

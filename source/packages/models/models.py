@@ -3,7 +3,7 @@ from pyod.models.auto_encoder import AutoEncoder
 from sklearn.ensemble import IsolationForest, RandomForestClassifier
 from sklearn.neighbors import NearestNeighbors
 from sklearn.svm import OneClassSVM
-
+import lsanomaly
 
 class RandomForestClassifierWithCoef(RandomForestClassifier):
     def fit(self, *args, **kwargs):
@@ -46,6 +46,14 @@ def use_model(model, df_list, x_columns, params):
         clf.fit(df_list[0][x_columns])
         for i in range(len(df_list)):
             pred = clf.decision_function(df_list[i][x_columns])
+            predicted.append(pred)
+
+    elif model == 'lsanomaly':
+        anomalymodel = lsanomaly.LSAnomaly(sigma=params['sigma'], rho=params['rho'])
+        anomalymodel.fit(df_list[0][x_columns].to_numpy())
+        for i in range(len(df_list)):
+            pred = anomalymodel.predict_proba(df_list[i][x_columns].to_numpy())
+            pred = [a[1] for a in  pred]
             predicted.append(pred)
 
     return predicted

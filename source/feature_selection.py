@@ -49,10 +49,11 @@ for model in models:
         x_columns) if j not in indexes_to_delete]
     selected_features_dict["A_" + str(model)] = selected_features
 
+selected_features_dict_new = {}
 for k in selected_features_dict.keys():
     new_key = ' '.join(str(k).replace("\\n", " ").split())
-    selected_features_dict[new_key] = selected_features_dict.pop(k)
+    selected_features_dict_new[new_key] = selected_features_dict[k]
 
 
-with open('./packages/config/selected_features.pickle', 'wb') as f:
-    pickle.dump(selected_features_dict, f)
+with open('./packages/config/selected_features2.pickle', 'wb') as f:
+    pickle.dump(selected_features_dict_new, f)
