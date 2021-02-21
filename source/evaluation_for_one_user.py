@@ -14,7 +14,7 @@ path_to_featutes = config.PATH_TO_FEATURES
 selected_features_dict = config.SELECTED_FEATURES_DICT
 y_column = config.Y_COLUMNS
 x_columns = config.X_COLUMNS
-models_dict =config.MODELS_DICT
+models_dict = config.MODELS_DICT
 
 df_raw_train = pd.read_csv(
     path_to_featutes + "imputed/" + "train.csv", sep=',')
@@ -23,9 +23,8 @@ df_raw_test = pd.read_csv(path_to_featutes + "imputed/" + "test.csv", sep=',')
 
 predict_based_on_whole_pattern = True
 
-use = ['knn', 'svm', 'isolationF', 'autoencoder','lsanomaly'][4]
-model=models_dict[use]
-
+use = ['knn', 'svm', 'isolationF', 'autoencoder', 'lsanomaly'][4]
+model = models_dict[use]
 
 
 selected_owners = ["'100669"]

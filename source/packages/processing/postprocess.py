@@ -1,6 +1,6 @@
 import itertools
 from collections import Counter
-from itertools import combinations 
+from itertools import combinations
 
 import numpy as np
 from sklearn.experimental import enable_iterative_imputer
@@ -108,7 +108,7 @@ def balance_the_combinations(users_comb):
             break
 
 
-def get_combinations_for_cv(list1, i_comb, login = False):
+def get_combinations_for_cv(list1, i_comb, login=False):
 
     if i_comb == 1:
         return [[item] for item in list1]
@@ -140,7 +140,8 @@ def get_combinations_for_cv(list1, i_comb, login = False):
                     for k in range(j+step, end, step*2):
                         for l in range(k+step, end, step):
                             # print(i, j, k, l)
-                            users_comb.append([list1[i], list1[j], list1[k], list1[l]])
+                            users_comb.append(
+                                [list1[i], list1[j], list1[k], list1[l]])
                             break
                         break
     else:

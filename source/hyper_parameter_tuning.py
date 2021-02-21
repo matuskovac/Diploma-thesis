@@ -17,6 +17,7 @@ warnings.filterwarnings('ignore')
 path_to_featutes = config.PATH_TO_FEATURES
 selected_features_dict = config.SELECTED_FEATURES_DICT
 y_column = config.Y_COLUMNS
+compute_login = config.COMPUTE_LOGIN
 
 df_raw_train = pd.read_csv(
     path_to_featutes + "imputed/" + "train.csv", sep=',')
@@ -24,7 +25,7 @@ df_raw_val = pd.read_csv(path_to_featutes + "imputed/" + "val.csv", sep=',')
 df_raw_test = pd.read_csv(path_to_featutes + "imputed/" + "test.csv", sep=',')
 
 
-use = ['knn', 'svm', 'isolationF','lsanomaly'][3]
+use = ['knn', 'svm', 'isolationF', 'lsanomaly'][3]
 all_params_comb = []
 
 if use == 'knn':
@@ -69,7 +70,7 @@ iterables = [all_features_subset,
              all_predict_based_on_whole_pattern, kind_of_patterns, all_params_comb]
 
 users_to_cv = postprocess.get_combinations_for_cv(
-    df_raw_train[y_column].unique(), 1)
+    df_raw_train[y_column].unique(), 1, compute_login)
 
 rows = []
 for features_subset, predict_based_on_whole_pattern, kind_of_patten, params in itertools.product(*iterables):
