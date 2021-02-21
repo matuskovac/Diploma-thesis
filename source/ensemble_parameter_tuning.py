@@ -18,7 +18,7 @@ selected_features_dict = config.SELECTED_FEATURES_DICT
 y_column = config.Y_COLUMNS
 x_columns = config.X_COLUMNS
 models_dict = config.MODELS_DICT
-
+compute_login = config.COMPUTE_LOGIN
 
 df_raw_train = pd.read_csv(
     path_to_featutes + "imputed/" + "train.csv", sep=',')
@@ -47,7 +47,7 @@ rows = []
 
 for count_of_owners, models_to_use, ensemble_based_on_segments, fun, scale in itertools.product(*iterables):
     users_to_cv = postprocess.get_combinations_for_cv(
-        df_raw_train[y_column].unique(), count_of_owners)
+        df_raw_train[y_column].unique(), count_of_owners, compute_login)
 
     ensemble_function = getattr(np, fun)
     scale_function = getattr(postprocess, scale)

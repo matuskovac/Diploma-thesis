@@ -141,3 +141,6 @@ debug.log
 login_datasets/
 login_features/
 results/
+cont_datasets/
+cont_features/
+data/*

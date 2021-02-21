@@ -16,6 +16,7 @@ selected_features_dict = config.SELECTED_FEATURES_DICT
 y_column = config.Y_COLUMNS
 x_columns = config.X_COLUMNS
 models_dict = config.MODELS_DICT
+compute_login = config.COMPUTE_LOGIN
 
 
 df_raw_train = pd.read_csv(
@@ -29,7 +30,7 @@ selected = 4
 model_to_use = options[selected]
 
 predict_based_on_whole_pattern = True
-kind_of_patten = 2
+kind_of_patten = 0
 ensemble_based_on_segments = False
 
 ensemble_based_on_users = False
@@ -38,7 +39,7 @@ function_to_ensemble_users = 'max'
 function_to_ensemble_users = getattr(np, function_to_ensemble_users)
 
 users_to_cv = postprocess.get_combinations_for_cv(
-    df_raw_train[y_column].unique(), 1)
+    df_raw_train[y_column].unique(), 1, compute_login)
 
 start = time.time()
 train_eer, val_eer, test_eer = evaluation.cross_validate_with_ensemble3(

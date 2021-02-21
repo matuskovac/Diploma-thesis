@@ -16,6 +16,7 @@ selected_features_dict = config.SELECTED_FEATURES_DICT
 y_column = config.Y_COLUMNS
 x_columns = config.X_COLUMNS
 models_dict = config.MODELS_DICT
+compute_login = config.COMPUTE_LOGIN
 
 
 df_raw_train = pd.read_csv(
@@ -37,7 +38,7 @@ scale_function = 'use_minmax_scaler_list'
 scale_function = getattr(postprocess, scale_function)
 function = getattr(np, fun)
 
-users_to_cv = postprocess.get_combinations_for_cv(df_raw_train[y_column].unique(), 2)
+users_to_cv = postprocess.get_combinations_for_cv(df_raw_train[y_column].unique(), 2, compute_login)
 
 start = time.time()
 train_eer, val_eer, test_eer = evaluation.cross_validate_with_ensemble(
