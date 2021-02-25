@@ -5,3 +5,4 @@ pyod
 shapely
 lsanomaly
 matplotlib
+tensorflow
