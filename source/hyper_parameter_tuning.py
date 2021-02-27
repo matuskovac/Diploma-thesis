@@ -31,8 +31,8 @@ all_params_comb = []
 if use == 'knn':
     model = 'knn'
 
-    all_knn_l = list(range(1, 5))
-    all_knn_n_neighbors = list(range(1, 5))
+    all_knn_l = list(range(1, 6))
+    all_knn_n_neighbors = list(range(1, 6))
     iterables = [all_knn_l, all_knn_n_neighbors]
     for n, p in itertools.product(*iterables):
         all_params_comb.append({'n': n, 'p': p})
@@ -72,6 +72,7 @@ iterables = [all_features_subset,
 users_to_cv = postprocess.get_combinations_for_cv(
     df_raw_train[y_column].unique(), 1, compute_login)
 
+print('k' + str(len(list(itertools.product(*iterables)))))
 rows = []
 for features_subset, predict_based_on_whole_pattern, kind_of_patten, params in itertools.product(*iterables):
 
@@ -80,12 +81,12 @@ for features_subset, predict_based_on_whole_pattern, kind_of_patten, params in i
 
     rows.append([features_subset,
                  predict_based_on_whole_pattern, kind_of_patten, model, params, train_eer, val_eer, test_eer])
-    print(len(rows))
+    print('k' + str(len(rows)))
 
 df_tuning = pd.DataFrame(rows, columns=[
                          "features_subset", "predict_based_on_whole_pattern", "kind_of_patten", "model", "params", "train_eer", "val_eer", "test_eer"])
 
-df_tuning.to_csv("../results/cont_tuning_result_lsa.csv",
+df_tuning.to_csv("../results/cont_tuning_result_knn.csv",
                  encoding='utf-8', index=False)
 
 
