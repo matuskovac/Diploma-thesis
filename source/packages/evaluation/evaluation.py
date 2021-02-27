@@ -193,8 +193,9 @@ def cross_validate_with_ensemble3(models_dict, model_to_use, selected_features_d
     for selected_owners in owners:
         df_train, df_val, df_test = split.adapt_dfs_to_users(
             df_raw_train, df_raw_val, df_raw_test, selected_owners, y_column, kind_of_patten)
-        if df_train.empty:
+        if df_train.empty or len(df_train)<15 or df_val.empty or df_test.empty:
             continue
+
         df_trains = split_by_owners(
             df_train, y_column, ensemble_based_on_users)
 
