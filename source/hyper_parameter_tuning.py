@@ -62,7 +62,8 @@ elif use == 'lsanomaly':
     for sigma, rho in itertools.product(*iterables):
         all_params_comb.append({'sigma': sigma, 'rho': rho})
 
-all_features_subset = selected_features_dict.keys()
+all_features_subset = list(selected_features_dict.keys())
+all_features_subset += [all_features_subset.pop(0)]
 all_predict_based_on_whole_pattern = [True]
 kind_of_patterns = [0, 1, 2]
 
@@ -72,7 +73,9 @@ iterables = [all_features_subset,
 users_to_cv = postprocess.get_combinations_for_cv(
     df_raw_train[y_column].unique(), 1, compute_login)
 
-print('k' + str(len(list(itertools.product(*iterables)))))
+comb_number = len(list(itertools.product(*iterables)))
+checkpoit_number = comb_number/len(all_features_subset)
+print('k' + str(comb_number))
 rows = []
 for features_subset, predict_based_on_whole_pattern, kind_of_patten, params in itertools.product(*iterables):
 
@@ -81,14 +84,15 @@ for features_subset, predict_based_on_whole_pattern, kind_of_patten, params in i
 
     rows.append([features_subset,
                  predict_based_on_whole_pattern, kind_of_patten, model, params, train_eer, val_eer, test_eer])
+
     print('k' + str(len(rows)))
+    if len(rows) == checkpoit_number:
+        df_tuning = pd.DataFrame(rows, columns=[
+                                "features_subset", "predict_based_on_whole_pattern", "kind_of_patten", "model", "params", "train_eer", "val_eer", "test_eer"])
 
-df_tuning = pd.DataFrame(rows, columns=[
-                         "features_subset", "predict_based_on_whole_pattern", "kind_of_patten", "model", "params", "train_eer", "val_eer", "test_eer"])
-
-df_tuning.to_csv("../results/cont_tuning_result_knn.csv",
-                 encoding='utf-8', index=False)
-
+        df_tuning.to_csv("../results/cont_tuning_result_knn.csv",
+                        encoding='utf-8', mode='a', index=False)
+        rows = []
 
 try:
     notificate.sendemail(subject='Script', message='DONE!')
