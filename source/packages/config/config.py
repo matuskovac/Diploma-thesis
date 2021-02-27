@@ -41,15 +41,22 @@ MODELS_DICT = (MODELS_DICT1 if COMPUTE_FEATURES_FOR_SEGMENT else MODELS_DICT2)
 
 Y_COLUMNS = USER_NAME_COLUMN
 
-file = open("./packages/config/selected_features.pickle", 'rb')
-SELECTED_FEATURES_DICT1 = pickle.load(file)
-file.close()
 
-file = open("./packages/config/selected_features2.pickle", 'rb')
-SELECTED_FEATURES_DICT2 = pickle.load(file)
-file.close()
+def load_selected_features_dict():
+    path_to_pickle = "./packages/config/"
+    if COMPUTE_LOGIN:
+        if COMPUTE_FEATURES_FOR_SEGMENT:
+            path_to_pickle += "selected_features.pickle"
+        else:
+            path_to_pickle += "selected_features2.pickle"
+    else:
+        path_to_pickle += "selected_features_cont.pickle"
+
+    file = open(path_to_pickle, 'rb')
+    SELECTED_FEATURES_DICT = pickle.load(file)
+    file.close()
+    return SELECTED_FEATURES_DICT
 
 
-SELECTED_FEATURES_DICT = (
-    SELECTED_FEATURES_DICT1 if COMPUTE_FEATURES_FOR_SEGMENT else SELECTED_FEATURES_DICT2)
+SELECTED_FEATURES_DICT = load_selected_features_dict()
 X_COLUMNS = SELECTED_FEATURES_DICT['0']

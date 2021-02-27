@@ -25,7 +25,7 @@ df_raw_val = pd.read_csv(path_to_featutes + "imputed/" + "val.csv", sep=',')
 df_raw_test = pd.read_csv(path_to_featutes + "imputed/" + "test.csv", sep=',')
 
 
-use = ['knn', 'svm', 'isolationF', 'lsanomaly'][3]
+use = ['knn', 'svm', 'isolationF', 'lsanomaly'][0]
 all_params_comb = []
 
 if use == 'knn':
@@ -56,15 +56,15 @@ elif use == 'isolationF':
 
 elif use == 'lsanomaly':
     model = 'lsanomaly'
-    all_sigma = [0.5, 1, 2, 3]
-    all_rho = [0.01, 0.1, 1, 10]
+    all_sigma = [0.5, 1, 2, 3, 4, 5, 6, 7, 10]
+    all_rho = [0.001, 0.01, 0.1, 1, 10]
     iterables = [all_sigma, all_rho]
     for sigma, rho in itertools.product(*iterables):
         all_params_comb.append({'sigma': sigma, 'rho': rho})
 
 all_features_subset = selected_features_dict.keys()
 all_predict_based_on_whole_pattern = [True]
-kind_of_patterns = [2]
+kind_of_patterns = [0, 1, 2]
 
 iterables = [all_features_subset,
              all_predict_based_on_whole_pattern, kind_of_patterns, all_params_comb]
@@ -85,7 +85,7 @@ for features_subset, predict_based_on_whole_pattern, kind_of_patten, params in i
 df_tuning = pd.DataFrame(rows, columns=[
                          "features_subset", "predict_based_on_whole_pattern", "kind_of_patten", "model", "params", "train_eer", "val_eer", "test_eer"])
 
-df_tuning.to_csv("../results/tuning_result_lsa.csv",
+df_tuning.to_csv("../results/cont_tuning_result_lsa.csv",
                  encoding='utf-8', index=False)
 
 
