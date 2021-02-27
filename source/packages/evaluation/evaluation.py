@@ -78,7 +78,7 @@ def cross_validate(x_columns, y_column, df_raw_train, df_raw_val, df_raw_test, o
         df_train, df_val, df_test = split.adapt_dfs_to_users(
             df_raw_train, df_raw_val, df_raw_test, selected_owners, y_column, kind_of_patten)
             
-        if df_train.empty:
+        if df_train.empty or len(df_train)<15 or df_val.empty or df_test.empty:
             continue
         predicted_train, predicted_val, predicted_test = models.use_model(
             model, [df_train, df_val, df_test], x_columns, params)
@@ -115,7 +115,7 @@ def cross_validate_with_ensemble(models_dict, models_to_use, selected_features_d
         df_train, df_val, df_test = split.adapt_dfs_to_users(
             df_raw_train, df_raw_val, df_raw_test, selected_owners, y_column, kind_of_patten)
 
-        if df_train.empty:
+        if df_train.empty or len(df_train)<15 or df_val.empty or df_test.empty:
             continue
         predicted_trains = []
         predicted_vals = []
