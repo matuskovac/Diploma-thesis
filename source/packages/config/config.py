@@ -7,6 +7,7 @@ USER_NAME_COLUMN = 'username'
 COMPUTE_FEATURES_FOR_SEGMENT = False
 DELETE_NAN_FEATURES = False
 COMPUTE_LOGIN = False
+CROPPED_OVER_1000 = True 
 
 PATH_TO_RAW_DATA = ('../login_datasets/2019-01-08_FIIT_-2-poschodie_po_skuske_KPAIS_correct_patterns_only/' if COMPUTE_LOGIN else '../cont_datasets/merged/')
 PATH_TO_FEATURES = ("../login_features/" if COMPUTE_LOGIN else "../cont_features/") + ("segments" if COMPUTE_FEATURES_FOR_SEGMENT else "paterns") + ("" if DELETE_NAN_FEATURES else "_nan") + "/"
@@ -58,7 +59,10 @@ def load_selected_features_dict():
         else:
             path_to_pickle += "selected_features2.pickle"
     else:
-        path_to_pickle += "selected_features_cont.pickle"
+        if not CROPPED_OVER_1000:
+            path_to_pickle += "selected_features_cont.pickle"
+        else:
+            path_to_pickle += "selected_features_cont2.pickle"
 
     file = open(path_to_pickle, 'rb')
     SELECTED_FEATURES_DICT = pickle.load(file)
