@@ -14,10 +14,14 @@ all_features = pd.read_csv(path_to_featutes + "all_feautures.csv")
 if compute_features_for_segment:
     all_features['id'] = all_features['id'].str[:-1]
 
+
 all_features = all_features.dropna(thresh=80)
 x_columns = [x for x in list(
     all_features.columns) if x not in columns_to_identify_features]
 
+filter_user_with_many_strokes = True
+if filter_user_with_many_strokes:
+    all_features = all_features.groupby('username').filter(lambda x : len(x)<1000).reset_index(drop=True)
 
 df_raw_train, df_raw_val, df_raw_test = split.split_to_train_val_test_raw(
     all_features, y_column)
@@ -25,6 +29,18 @@ df_raw_train, df_raw_val, df_raw_test = split.split_to_train_val_test_raw(
 df_raw_train, df_raw_val, df_raw_test = postprocess.use_standard_scaler(
     [df_raw_train, df_raw_val, df_raw_test], x_columns)
 print(df_raw_train[:10])
+
+df_raw_train.to_csv(path_to_featutes  +
+                    "train.csv", encoding='utf-8', index=False)
+df_raw_val.to_csv(path_to_featutes +
+                  "val.csv", encoding='utf-8', index=False)
+df_raw_test.to_csv(path_to_featutes +
+                   "test.csv", encoding='utf-8', index=False)
+
+df_raw_train = pd.read_csv(path_to_featutes + "train.csv")
+df_raw_val = pd.read_csv(path_to_featutes + "val.csv")
+df_raw_test = pd.read_csv(path_to_featutes + "test.csv")
+
 if not delete_nan_features:
     df_raw_train, df_raw_val, df_raw_test = postprocess.use_imputation(
         [df_raw_train, df_raw_val, df_raw_test], x_columns)

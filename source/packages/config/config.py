@@ -7,6 +7,7 @@ USER_NAME_COLUMN = 'username'
 COMPUTE_FEATURES_FOR_SEGMENT = False
 DELETE_NAN_FEATURES = False
 COMPUTE_LOGIN = False
+CROPPED_OVER_1000 = True 
 
 PATH_TO_RAW_DATA = ('../login_datasets/2019-01-08_FIIT_-2-poschodie_po_skuske_KPAIS_correct_patterns_only/' if COMPUTE_LOGIN else '../cont_datasets/merged/')
 PATH_TO_FEATURES = ("../login_features/" if COMPUTE_LOGIN else "../cont_features/") + ("segments" if COMPUTE_FEATURES_FOR_SEGMENT else "paterns") + ("" if DELETE_NAN_FEATURES else "_nan") + "/"
@@ -37,7 +38,15 @@ MODELS_DICT2 = {
     'autoencoder': {'name': 'autoencoder', 'params': {'hidden_neurons': [20, 10, 3, 10, 20]}, 'x_columns': '20_RandomForestClassifierWithCoef(min_samples_leaf=5, n_estimators=500, n_jobs=-1)'},
     'lsanomaly': {'name': 'lsanomaly', 'params': {'sigma': 2, 'rho': 0.01}, 'x_columns': '10_RandomForestClassifierWithCoef(min_samples_leaf=5, n_estimators=500, n_jobs=-1)'}
 }
-MODELS_DICT = (MODELS_DICT1 if COMPUTE_FEATURES_FOR_SEGMENT else MODELS_DICT2)
+#settings for cont
+MODELS_DICT3 = {
+    'knn': {'name': 'knn', 'params': {'n': 1, 'p': 1}, 'x_columns': '10_RandomForestClassifierWithCoef(min_samples_leaf=5, n_estimators=500, n_jobs=-1)'},
+    'svm': {'name': 'svm', 'params': {'kernel': 'rbf'}, 'x_columns': '0'},
+    'isolationF': {'name': 'ísolationForest', 'params': {'n_estimators': 500}, 'x_columns': '10_RandomForestClassifierWithCoef(min_samples_leaf=5, n_estimators=500, n_jobs=-1)'},
+    'autoencoder': {'name': 'autoencoder', 'params': {'hidden_neurons': [20, 10, 3, 10, 20]}, 'x_columns': '20_RandomForestClassifierWithCoef(min_samples_leaf=5, n_estimators=500, n_jobs=-1)'},
+    'lsanomaly': {'name': 'lsanomaly', 'params': {'sigma': 1, 'rho': 0.001}, 'x_columns': '10_RandomForestClassifierWithCoef(min_samples_leaf=5, n_estimators=500, n_jobs=-1)'}
+}
+MODELS_DICT = (MODELS_DICT1 if COMPUTE_FEATURES_FOR_SEGMENT else MODELS_DICT2) if COMPUTE_LOGIN else MODELS_DICT3
 
 Y_COLUMNS = USER_NAME_COLUMN
 
@@ -50,7 +59,10 @@ def load_selected_features_dict():
         else:
             path_to_pickle += "selected_features2.pickle"
     else:
-        path_to_pickle += "selected_features_cont.pickle"
+        if not CROPPED_OVER_1000:
+            path_to_pickle += "selected_features_cont.pickle"
+        else:
+            path_to_pickle += "selected_features_cont2.pickle"
 
     file = open(path_to_pickle, 'rb')
     SELECTED_FEATURES_DICT = pickle.load(file)
