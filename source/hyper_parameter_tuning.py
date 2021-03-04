@@ -27,6 +27,7 @@ df_raw_test = pd.read_csv(path_to_featutes + "imputed/" + "test.csv", sep=',')
 
 use = ['knn', 'svm', 'isolationF', 'lsanomaly'][0]
 all_params_comb = []
+name = 'knn'
 
 if use == 'knn':
     model = 'knn'
@@ -75,8 +76,12 @@ users_to_cv = postprocess.get_combinations_for_cv(
 
 comb_number = len(list(itertools.product(*iterables)))
 checkpoit_number = comb_number/len(all_features_subset)
-print('k' + str(comb_number))
+print(name + str(comb_number))
 rows = []
+df_tuning = pd.DataFrame(rows, columns=["features_subset", "predict_based_on_whole_pattern", "kind_of_patten", "model", "params", "train_eer", "val_eer", "test_eer"])
+
+df_tuning.to_csv("../results/cont_tuning_result_" + name + ".csv", encoding='utf-8', index=False)
+
 for features_subset, predict_based_on_whole_pattern, kind_of_patten, params in itertools.product(*iterables):
 
     train_eer, val_eer, test_eer = evaluation.cross_validate(
@@ -85,13 +90,13 @@ for features_subset, predict_based_on_whole_pattern, kind_of_patten, params in i
     rows.append([features_subset,
                  predict_based_on_whole_pattern, kind_of_patten, model, params, train_eer, val_eer, test_eer])
 
-    print('k' + str(len(rows)))
+    print(name + str(len(rows)))
     if len(rows) == checkpoit_number:
         df_tuning = pd.DataFrame(rows, columns=[
                                 "features_subset", "predict_based_on_whole_pattern", "kind_of_patten", "model", "params", "train_eer", "val_eer", "test_eer"])
 
-        df_tuning.to_csv("../results/cont_tuning_result_knn.csv",
-                        encoding='utf-8', mode='a', index=False)
+        df_tuning.to_csv("../results/cont_tuning_result_" + name + ".csv",
+                        encoding='utf-8', mode='a', index=False, header=False)
         rows = []
 
 try:
