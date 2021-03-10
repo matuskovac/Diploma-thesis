@@ -2,7 +2,7 @@ import pandas as pd
 
 from packages.config import config
 from packages.processing import postprocess, split
-
+from packages.notification import notificate
 
 compute_features_for_segment = config.COMPUTE_FEATURES_FOR_SEGMENT
 path_to_featutes = config.PATH_TO_FEATURES
@@ -16,7 +16,7 @@ if compute_features_for_segment:
     all_features['id'] = all_features['id'].str[:-1]
 
 
-all_features = all_features.dropna(thresh=80)
+all_features = all_features.dropna(thresh=80).reset_index(drop=True)
 x_columns = [x for x in list(
     all_features.columns) if x not in columns_to_identify_features]
 
@@ -53,3 +53,10 @@ df_raw_val.to_csv(path_to_featutes + "imputed/" +
                   "val.csv", encoding='utf-8', index=False)
 df_raw_test.to_csv(path_to_featutes + "imputed/" +
                    "test.csv", encoding='utf-8', index=False)
+
+try:
+    notificate.sendemail(subject='Script', message='DONE!')
+except:
+    print("Mail not sent!")
+finally:
+    print("Job done!")
