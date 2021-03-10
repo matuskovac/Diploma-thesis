@@ -9,6 +9,7 @@ path_to_featutes = config.PATH_TO_FEATURES
 delete_nan_features = config.DELETE_NAN_FEATURES
 columns_to_identify_features = config.get_columns_to_identify_features()
 y_column = config.USER_NAME_COLUMN
+filter_user_with_many_strokes = config.CROPPED_OVER_1000
 
 all_features = pd.read_csv(path_to_featutes + "all_feautures.csv")
 if compute_features_for_segment:
@@ -19,7 +20,7 @@ all_features = all_features.dropna(thresh=80)
 x_columns = [x for x in list(
     all_features.columns) if x not in columns_to_identify_features]
 
-filter_user_with_many_strokes = True
+
 if filter_user_with_many_strokes:
     all_features = all_features.groupby('username').filter(lambda x : len(x)<1000).reset_index(drop=True)
 
