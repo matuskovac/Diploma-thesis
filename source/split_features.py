@@ -22,7 +22,20 @@ x_columns = [x for x in list(
 
 
 if filter_user_with_many_strokes:
-    all_features = all_features.groupby('username').filter(lambda x : len(x)<1000).reset_index(drop=True)
+    sipledf = all_features.loc[all_features['scenario'] == 'scenario_show_simple'].dropna().reset_index(drop=True)
+    complexdf = all_features.loc[all_features['scenario'] == 'scenario_show_complex'].dropna().reset_index(drop=True)
+    sipledf = sipledf.groupby('username').head(500)
+    complexdf = complexdf.groupby('username').head(500)
+    only_nan = all_features[all_features.isna().any(axis=1)].reset_index(drop=True)
+
+    merged_without_nans = sipledf.append(complexdf).reset_index(drop=True)
+    merged = merged_without_nans.append(only_nan).reset_index(drop=True)
+    sipledf = merged.loc[merged['scenario'] == 'scenario_show_simple']
+    complexdf = merged.loc[merged['scenario'] == 'scenario_show_complex']
+    sipledf = sipledf.groupby('username').head(500)
+    complexdf = complexdf.groupby('username').head(500)
+    final = sipledf.append(complexdf).reset_index(drop=True)
+    all_features = final.sort_values(['username','pattern_id']).reset_index(drop=True)
 
 df_raw_train, df_raw_val, df_raw_test = split.split_to_train_val_test_raw(
     all_features, y_column)
