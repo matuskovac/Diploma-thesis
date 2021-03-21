@@ -24,7 +24,7 @@ def get_columns_to_identify_features():
 # settings for segment based predictions
 MODELS_DICT1 = {
     'knn': {'name': 'knn', 'params': {'n': 2, 'p': 1}, 'x_columns': '10_RandomForestClassifierWithCoef(min_samples_leaf=5, n_estimators=500, n_jobs=-1)'},
-    'svm': {'name': 'svm', 'params': {'kernel': 'rbf'}, 'x_columns': '20_LogisticRegression()'},
+    'svm': {'name': 'svm', 'params': {'kernel': 'linear'}, 'x_columns': '10_RandomForestClassifierWithCoef(min_samples_leaf=5, n_estimators=500, n_jobs=-1)'},
     'isolationF': {'name': 'ísolationForest', 'params': {'n_estimators': 300}, 'x_columns': '10_RandomForestClassifierWithCoef(min_samples_leaf=5, n_estimators=500, n_jobs=-1)'},
     'autoencoder': {'name': 'autoencoder', 'params': {'hidden_neurons': [10, 2, 2, 10]}, 'x_columns': '10_RandomForestClassifierWithCoef(min_samples_leaf=5, n_estimators=500, n_jobs=-1)'},
     'lsanomaly': {'name': 'lsanomaly', 'params': {'sigma': 6, 'rho': 0.01}, 'x_columns': '50_RandomForestClassifierWithCoef(min_samples_leaf=5, n_estimators=500, n_jobs=-1)'}
@@ -33,7 +33,7 @@ MODELS_DICT1 = {
 # settings for whole pattern
 MODELS_DICT2 = {
     'knn': {'name': 'knn', 'params': {'n': 2, 'p': 2}, 'x_columns': '20_RandomForestClassifierWithCoef(min_samples_leaf=5, n_estimators=500, n_jobs=-1)'},
-    'svm': {'name': 'svm', 'params': {'kernel': 'rbf'}, 'x_columns': '20_LogisticRegression()'},
+    'svm': {'name': 'svm', 'params': {'kernel': 'linear'}, 'x_columns': '10_RandomForestClassifierWithCoef(min_samples_leaf=5, n_estimators=500, n_jobs=-1)'},
     'isolationF': {'name': 'ísolationForest', 'params': {'n_estimators': 500}, 'x_columns': '10_RandomForestClassifierWithCoef(min_samples_leaf=5, n_estimators=500, n_jobs=-1)'},
     'autoencoder': {'name': 'autoencoder', 'params': {'hidden_neurons': [20, 10, 3, 10, 20]}, 'x_columns': '20_RandomForestClassifierWithCoef(min_samples_leaf=5, n_estimators=500, n_jobs=-1)'},
     'lsanomaly': {'name': 'lsanomaly', 'params': {'sigma': 2, 'rho': 0.01}, 'x_columns': '10_RandomForestClassifierWithCoef(min_samples_leaf=5, n_estimators=500, n_jobs=-1)'}
