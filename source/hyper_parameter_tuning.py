@@ -82,6 +82,7 @@ df_tuning = pd.DataFrame(rows, columns=["features_subset", "predict_based_on_who
 
 df_tuning.to_csv("../results/cont_tuning_result_" + name + ".csv", encoding='utf-8', index=False)
 
+multiplier = 0
 for features_subset, predict_based_on_whole_pattern, kind_of_patten, params in itertools.product(*iterables):
 
     train_eer, val_eer, test_eer = evaluation.cross_validate(
@@ -90,8 +91,9 @@ for features_subset, predict_based_on_whole_pattern, kind_of_patten, params in i
     rows.append([features_subset,
                  predict_based_on_whole_pattern, kind_of_patten, model, params, train_eer, val_eer, test_eer])
 
-    print(name + str(len(rows)))
+    print(name + str(len(rows) + (checkpoit_number * multiplier)))
     if len(rows) == checkpoit_number:
+        multiplier += 1
         df_tuning = pd.DataFrame(rows, columns=[
                                 "features_subset", "predict_based_on_whole_pattern", "kind_of_patten", "model", "params", "train_eer", "val_eer", "test_eer"])
 
