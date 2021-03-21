@@ -3,7 +3,7 @@ import pickle
 import pandas as pd
 from packages.config import config 
 
-path_to_data = "./data" + ("2/" if config.CROPPED_OVER_1000 else "/")
+path_to_data = "./data" + ("l" if config.COMPUTE_LOGIN else "") + ("s" if config.COMPUTE_FEATURES_FOR_SEGMENT else "") + ("2/" if config.CROPPED_OVER_1000 else "/")
 
 def temp(df, all_usernames, new_user_usernames, y_column):
     unique_patterns_id = df.groupby(y_column)['id'].unique()
