@@ -68,8 +68,8 @@ df_tuning.to_csv("../results/ensemble_models.csv",
 
 
 try:
-    notificate.sendemail(subject='Script', message='DONE!')
+    notificate.sendnotificate(message='DONE!')
 except:
-    print("Mail not sent!")
+    print("Notificate not sent!")
 finally:
     print("Job done!")

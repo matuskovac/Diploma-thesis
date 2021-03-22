@@ -68,8 +68,8 @@ df_raw_test.to_csv(path_to_featutes + "imputed/" +
                    "test.csv", encoding='utf-8', index=False)
 
 try:
-    notificate.sendemail(subject='Script', message='DONE!')
+    notificate.sendnotificate(message='DONE!')
 except:
-    print("Mail not sent!")
+    print("Notificate not sent!")
 finally:
     print("Job done!")

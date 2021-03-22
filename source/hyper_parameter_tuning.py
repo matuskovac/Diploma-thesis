@@ -102,8 +102,8 @@ for features_subset, predict_based_on_whole_pattern, kind_of_patten, params in i
         rows = []
 
 try:
-    notificate.sendemail(subject='Script', message='DONE!')
+    notificate.sendnotificate(message='DONE!')
 except:
-    print("Mail not sent!")
+    print("Notificate not sent!")
 finally:
     print("Job done!")

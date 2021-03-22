@@ -6,3 +6,4 @@ shapely
 lsanomaly
 matplotlib
 tensorflow
+notify-run

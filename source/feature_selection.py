@@ -59,8 +59,8 @@ with open('./packages/config/selected_features_cont.pickle', 'wb') as f:
     pickle.dump(selected_features_dict_new, f)
 
 try:
-    notificate.sendemail(subject='Script', message='DONE!')
+    notificate.sendnotificate(message='DONE!')
 except:
-    print("Mail not sent!")
+    print("Notificate not sent!")
 finally:
     print("Job done!")
