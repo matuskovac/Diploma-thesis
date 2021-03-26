@@ -13,7 +13,7 @@ filter_user_with_many_strokes = config.CROPPED_OVER_1000
 
 all_features = pd.read_csv(path_to_featutes + "all_feautures.csv")
 if compute_features_for_segment:
-    all_features['id'] = all_features['id'].str[:-1]
+    all_features['id'] = all_features['id'].astype(str).str[:-1]
 
 
 all_features = all_features.dropna(thresh=80).reset_index(drop=True)
