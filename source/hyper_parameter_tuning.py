@@ -35,7 +35,7 @@ if use == 'knn':
     all_knn_l = list(range(1, 6))
     all_knn_n_neighbors = list(range(1, 6))
     iterables = [all_knn_l, all_knn_n_neighbors]
-    for n, p in itertools.product(*iterables):
+    for p, n in itertools.product(*iterables):
         all_params_comb.append({'n': n, 'p': p})
 
 
