@@ -24,7 +24,7 @@ def get_columns_to_identify_features():
 # settings for segment based predictions
 MODELS_DICT1 = {
     'knn': {'name': 'knn', 'params': {'n': 2, 'p': 1}, 'x_columns': '10_RandomForestClassifierWithCoef(min_samples_leaf=5, n_estimators=500, n_jobs=-1)'},
-    'svm': {'name': 'svm', 'params': {'kernel': 'linear'}, 'x_columns': '100_RandomForestClassifierWithCoef(min_samples_leaf=5, n_estimators=500, n_jobs=-1)'},
+    'svm': {'name': 'svm', 'params': {'kernel': 'linear'}, 'x_columns': '40_RandomForestClassifierWithCoef(min_samples_leaf=5, n_estimators=500, n_jobs=-1)'},
     'isolationF': {'name': 'ísolationForest', 'params': {'n_estimators': 300}, 'x_columns': '10_RandomForestClassifierWithCoef(min_samples_leaf=5, n_estimators=500, n_jobs=-1)'},
     'autoencoder': {'name': 'autoencoder', 'params': {'hidden_neurons': [10, 2, 2, 10]}, 'x_columns': '10_RandomForestClassifierWithCoef(min_samples_leaf=5, n_estimators=500, n_jobs=-1)'},
     'lsanomaly': {'name': 'lsanomaly', 'params': {'sigma': 6, 'rho': 0.01}, 'x_columns': '50_RandomForestClassifierWithCoef(min_samples_leaf=5, n_estimators=500, n_jobs=-1)'}
@@ -41,10 +41,10 @@ MODELS_DICT2 = {
 #settings for cont
 MODELS_DICT3 = {
     'knn': {'name': 'knn', 'params': {'n': 1, 'p': 1}, 'x_columns': '10_RandomForestClassifierWithCoef(min_samples_leaf=5, n_estimators=500, n_jobs=-1)'},
-    'svm': {'name': 'svm', 'params': {'kernel': 'rbf'}, 'x_columns': '0'},
+    'svm': {'name': 'svm', 'params': {'kernel': 'linear'}, 'x_columns': '0'},
     'isolationF': {'name': 'ísolationForest', 'params': {'n_estimators': 400}, 'x_columns': '10_RandomForestClassifierWithCoef(min_samples_leaf=5, n_estimators=500, n_jobs=-1)'},
     'autoencoder': {'name': 'autoencoder', 'params': {'hidden_neurons': [20, 10, 3, 10, 20]}, 'x_columns': '20_RandomForestClassifierWithCoef(min_samples_leaf=5, n_estimators=500, n_jobs=-1)'},
-    'lsanomaly': {'name': 'lsanomaly', 'params': {'sigma': 1, 'rho': 0.001}, 'x_columns': '10_RandomForestClassifierWithCoef(min_samples_leaf=5, n_estimators=500, n_jobs=-1)'}
+    'lsanomaly': {'name': 'lsanomaly', 'params': {'sigma': 1, 'rho': 0.01}, 'x_columns': '10_RandomForestClassifierWithCoef(min_samples_leaf=5, n_estimators=500, n_jobs=-1)'}
 }
 MODELS_DICT = (MODELS_DICT1 if COMPUTE_FEATURES_FOR_SEGMENT else MODELS_DICT2) if COMPUTE_LOGIN else MODELS_DICT3
 
