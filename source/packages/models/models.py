@@ -29,6 +29,8 @@ def use_model(model, df_list, x_columns, params):
 
         for i in range(len(df_list)):
             pred = svm.score_samples(df_list[i][x_columns])
+            maximum = max(pred)
+            pred = [(x * -1) + maximum for x in pred]
             predicted.append(pred)
 
     elif model == 'ísolationForest':

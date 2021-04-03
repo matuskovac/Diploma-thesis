@@ -35,7 +35,7 @@ if use == 'knn':
     all_knn_l = list(range(1, 6))
     all_knn_n_neighbors = list(range(1, 6))
     iterables = [all_knn_l, all_knn_n_neighbors]
-    for n, p in itertools.product(*iterables):
+    for p, n in itertools.product(*iterables):
         all_params_comb.append({'n': n, 'p': p})
 
 
@@ -82,6 +82,7 @@ df_tuning = pd.DataFrame(rows, columns=["features_subset", "predict_based_on_who
 
 df_tuning.to_csv("../results/cont_tuning_result_" + name + ".csv", encoding='utf-8', index=False)
 
+multiplier = 0
 for features_subset, predict_based_on_whole_pattern, kind_of_patten, params in itertools.product(*iterables):
 
     train_eer, val_eer, test_eer = evaluation.cross_validate(
@@ -90,8 +91,9 @@ for features_subset, predict_based_on_whole_pattern, kind_of_patten, params in i
     rows.append([features_subset,
                  predict_based_on_whole_pattern, kind_of_patten, model, params, train_eer, val_eer, test_eer])
 
-    print(name + str(len(rows)))
+    print(name + str(len(rows) + (checkpoit_number * multiplier)))
     if len(rows) == checkpoit_number:
+        multiplier += 1
         df_tuning = pd.DataFrame(rows, columns=[
                                 "features_subset", "predict_based_on_whole_pattern", "kind_of_patten", "model", "params", "train_eer", "val_eer", "test_eer"])
 
@@ -100,8 +102,8 @@ for features_subset, predict_based_on_whole_pattern, kind_of_patten, params in i
         rows = []
 
 try:
-    notificate.sendemail(subject='Script', message='DONE!')
+    notificate.sendnotificate(message='DONE!')
 except:
-    print("Mail not sent!")
+    print("Notificate not sent!")
 finally:
     print("Job done!")

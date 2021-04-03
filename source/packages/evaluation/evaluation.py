@@ -54,23 +54,14 @@ def get_eer(test_y_raw, tresholds, selected_owners):
 
     # predicted_y = [0]*len(tresholds)
     # for i in range(len(tresholds)):
-    #     if predicted_y[i] == 1:
-    #         continue
     #     predicted_y[i] = 1
-
-    #     for j in range(i, len(tresholds)):
-    #         if(tresholds[j] == tresholds[j+1]):
-    #             predicted_y[j+1] = 1
-    #         else:
-    #             break    
     #     fmr_array.append(fmr_score(test_y, predicted_y))
     #     fnmr_array.append(fnmr_score(test_y, predicted_y))
-    
-    for treshold in tresholds:
-        predicted_y = [1 if i <= treshold else 0 for i in tresholds]
 
-        fmr_array.append(fmr_score(test_y, predicted_y))
-        fnmr_array.append(fnmr_score(test_y, predicted_y))
+    for treshold in tresholds:
+       predicted_y = [1 if i <= treshold else 0 for i in tresholds]
+       fmr_array.append(fmr_score(test_y, predicted_y))
+       fnmr_array.append(fnmr_score(test_y, predicted_y))
 
     line1 = LineString(list(zip(tresholds, fmr_array)))
     line2 = LineString(list(zip(tresholds, fnmr_array)))
