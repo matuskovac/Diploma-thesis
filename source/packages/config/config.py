@@ -42,7 +42,7 @@ MODELS_DICT2 = {
 MODELS_DICT3 = {
     'knn': {'name': 'knn', 'params': {'n': 1, 'p': 1}, 'x_columns': '10_RandomForestClassifierWithCoef(min_samples_leaf=5, n_estimators=500, n_jobs=-1)'},
     'svm': {'name': 'svm', 'params': {'kernel': 'linear'}, 'x_columns': '0'},
-    'isolationF': {'name': 'ísolationForest', 'params': {'n_estimators': 400}, 'x_columns': '10_RandomForestClassifierWithCoef(min_samples_leaf=5, n_estimators=500, n_jobs=-1)'},
+    'isolationF': {'name': 'ísolationForest', 'params': {'n_estimators': 100}, 'x_columns': '10_RandomForestClassifierWithCoef(min_samples_leaf=5, n_estimators=500, n_jobs=-1)'},
     'autoencoder': {'name': 'autoencoder', 'params': {'hidden_neurons': [20, 10, 3, 10, 20]}, 'x_columns': '20_RandomForestClassifierWithCoef(min_samples_leaf=5, n_estimators=500, n_jobs=-1)'},
     'lsanomaly': {'name': 'lsanomaly', 'params': {'sigma': 1, 'rho': 0.01}, 'x_columns': '10_RandomForestClassifierWithCoef(min_samples_leaf=5, n_estimators=500, n_jobs=-1)'}
 }
@@ -62,7 +62,7 @@ def load_selected_features_dict():
         if not CROPPED_OVER_1000:
             path_to_pickle += "selected_features_cont.pickle"
         else:
-            path_to_pickle += "selected_features_cont2.pickle"
+            path_to_pickle += "selected_features_cont_new.pickle"
 
     file = open(path_to_pickle, 'rb')
     SELECTED_FEATURES_DICT = pickle.load(file)
