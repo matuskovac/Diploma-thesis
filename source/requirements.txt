@@ -5,3 +5,6 @@ pyod
 shapely
 lsanomaly
 matplotlib
+tensorflow
+notify-run
+auto_tqdm

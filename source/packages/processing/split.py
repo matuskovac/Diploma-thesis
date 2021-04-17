@@ -1,7 +1,9 @@
 import random
-
+import pickle
 import pandas as pd
+from packages.config import config 
 
+path_to_data = "./data" + ("l" if config.COMPUTE_LOGIN else "") + ("s" if config.COMPUTE_FEATURES_FOR_SEGMENT else "") + ("2/" if config.CROPPED_OVER_1000 else "/")
 
 def temp(df, all_usernames, new_user_usernames, y_column):
     unique_patterns_id = df.groupby(y_column)['id'].unique()
@@ -65,59 +67,70 @@ def split_to_train_val_test_raw(df, y_column):
 
 def adapt_dfs_to_users(df_raw_train, df_raw_val, df_raw_test, users, y_column,  filt=0):
 
-    if(filt == 1):
-        df_train_filtered = df_raw_train.loc[df_raw_train['scenario']
-                                             == 'scenario_show_simple']
-        df_val_filtered = df_raw_val.loc[df_raw_val['scenario']
-                                         == 'scenario_show_simple']
-        df_test_filtered = df_raw_test.loc[df_raw_test['scenario']
-                                           == 'scenario_show_simple']
-    elif (filt == 2):
-        df_train_filtered = df_raw_train.loc[df_raw_train['scenario']
-                                             == 'scenario_show_complex']
-        df_val_filtered = df_raw_val.loc[df_raw_val['scenario']
-                                         == 'scenario_show_complex']
-        df_test_filtered = df_raw_test.loc[df_raw_test['scenario']
-                                           == 'scenario_show_complex']
-    else:
-        df_train_filtered = df_raw_train
-        df_val_filtered = df_raw_val
-        df_test_filtered = df_raw_test
+    path = (path_to_data + str(filt)+'_'+ '_'.join(users)+'.pickle').replace("'","")
 
-    mask = [True if x[y_column] in users else False for i,
-            x in df_train_filtered.iterrows()]
-    df_train = df_train_filtered[mask]
+    try:
+        file = open(path, 'rb')
+        df_train, df_val, df_test = pickle.load(file)
+        file.close()
+    except:
 
-    mask = [True if x[y_column] in users else False for i,
-            x in df_val_filtered.iterrows()]
-    df_val = df_val_filtered[mask]
+        if(filt == 1):
+            df_train_filtered = df_raw_train.loc[df_raw_train['scenario']
+                                                == 'scenario_show_simple']
+            df_val_filtered = df_raw_val.loc[df_raw_val['scenario']
+                                            == 'scenario_show_simple']
+            df_test_filtered = df_raw_test.loc[df_raw_test['scenario']
+                                            == 'scenario_show_simple']
+        elif (filt == 2):
+            df_train_filtered = df_raw_train.loc[df_raw_train['scenario']
+                                                == 'scenario_show_complex']
+            df_val_filtered = df_raw_val.loc[df_raw_val['scenario']
+                                            == 'scenario_show_complex']
+            df_test_filtered = df_raw_test.loc[df_raw_test['scenario']
+                                            == 'scenario_show_complex']
+        else:
+            df_train_filtered = df_raw_train
+            df_val_filtered = df_raw_val
+            df_test_filtered = df_raw_test
 
-    mask = [True if x[y_column] not in users else False for i,
-            x in df_val_filtered.iterrows()]
-    df_not_users_val = df_val_filtered[mask]
+        mask = [True if x[y_column] in users else False for i,
+                x in df_train_filtered.iterrows()]
+        df_train = df_train_filtered[mask]
 
-    unique_users_paterns = df_val['id'].unique()
-    unique_not_users_paterns = df_not_users_val['id'].unique()[
-        :len(unique_users_paterns)]
+        mask = [True if x[y_column] in users else False for i,
+                x in df_val_filtered.iterrows()]
+        df_val = df_val_filtered[mask]
 
-    mask = [True if x['id'] in unique_not_users_paterns else False for i,
-            x in df_not_users_val.iterrows()]
-    df_val = pd.concat([df_val, df_not_users_val[mask]])
+        mask = [True if x[y_column] not in users else False for i,
+                x in df_val_filtered.iterrows()]
+        df_not_users_val = df_val_filtered[mask]
 
-    mask = [True if x[y_column] in users else False for i,
-            x in df_test_filtered.iterrows()]
-    df_test = df_test_filtered[mask]
+        unique_users_paterns = df_val['id'].unique()
+        unique_not_users_paterns = df_not_users_val['id'].unique()[
+            :len(unique_users_paterns)]
 
-    mask = [True if x[y_column] not in users else False for i,
-            x in df_test_filtered.iterrows()]
-    df_not_users_test = df_test_filtered[mask]
+        mask = [True if x['id'] in unique_not_users_paterns else False for i,
+                x in df_not_users_val.iterrows()]
+        df_val = pd.concat([df_val, df_not_users_val[mask]])
 
-    unique_users_paterns = df_test['id'].unique()
-    unique_not_users_paterns = df_not_users_test['id'].unique()[
-        :len(unique_users_paterns)]
+        mask = [True if x[y_column] in users else False for i,
+                x in df_test_filtered.iterrows()]
+        df_test = df_test_filtered[mask]
 
-    mask = [True if x['id'] in unique_not_users_paterns else False for i,
-            x in df_not_users_test.iterrows()]
-    df_test = pd.concat([df_test, df_not_users_test[mask]])
+        mask = [True if x[y_column] not in users else False for i,
+                x in df_test_filtered.iterrows()]
+        df_not_users_test = df_test_filtered[mask]
+
+        unique_users_paterns = df_test['id'].unique()
+        unique_not_users_paterns = df_not_users_test['id'].unique()[
+            :len(unique_users_paterns)]
+
+        mask = [True if x['id'] in unique_not_users_paterns else False for i,
+                x in df_not_users_test.iterrows()]
+        df_test = pd.concat([df_test, df_not_users_test[mask]])
+
+        with open(path, 'wb') as f:
+            pickle.dump([df_train, df_val, df_test], f)
 
     return df_train, df_val, df_test

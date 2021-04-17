@@ -1,5 +1,6 @@
 import itertools
 from collections import Counter
+from itertools import combinations
 
 import numpy as np
 from sklearn.experimental import enable_iterative_imputer
@@ -107,41 +108,45 @@ def balance_the_combinations(users_comb):
             break
 
 
-def get_combinations_for_cv(list, i_comb):
-    # random.seed(0)
-    # random.shuffle(list)
+def get_combinations_for_cv(list1, i_comb, login=False):
+
     if i_comb == 1:
-        return list
+        return [[item] for item in list1]
 
     users_comb = []
-    end = len(list)
+    if (login):
+        end = len(list1)
 
-    if i_comb == 2:
-        step = 6
-        for i in range(end):
-            for j in range(i+step, end, step):
-                # print(i, j)
-                users_comb.append([list[i], list[j]])
+        if i_comb == 2:
+            step = 6
+            for i in range(end):
+                for j in range(i+step, end, step):
+                    # print(i, j)
+                    users_comb.append([list1[i], list1[j]])
 
-    elif i_comb == 3:
-        step = 3
-        for i in range(end):
-            for j in range(i+step, end, step*2):
-                for k in range(j+step, end, step):
-                    # print(i, j, k)
-                    users_comb.append([list[i], list[j], list[k]])
-                    break
-
-    elif i_comb == 4:
-        step = 2
-        for i in range(end):
-            for j in range(i+step, end, step*3):
-                for k in range(j+step, end, step*2):
-                    for l in range(k+step, end, step):
-                        # print(i, j, k, l)
-                        users_comb.append([list[i], list[j], list[k], list[l]])
+        elif i_comb == 3:
+            step = 3
+            for i in range(end):
+                for j in range(i+step, end, step*2):
+                    for k in range(j+step, end, step):
+                        # print(i, j, k)
+                        users_comb.append([list1[i], list1[j], list1[k]])
                         break
-                    break
-    
+
+        elif i_comb == 4:
+            step = 2
+            for i in range(end):
+                for j in range(i+step, end, step*3):
+                    for k in range(j+step, end, step*2):
+                        for l in range(k+step, end, step):
+                            # print(i, j, k, l)
+                            users_comb.append(
+                                [list1[i], list1[j], list1[k], list1[l]])
+                            break
+                        break
+    else:
+        users_comb = combinations(list1, i_comb)
+        users_comb = list(users_comb)
+        users_comb = [list(elem) for elem in users_comb][0:len(list1)]
     balance_the_combinations(users_comb)
     return users_comb

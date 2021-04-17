@@ -50,12 +50,18 @@ def get_eer(test_y_raw, tresholds, selected_owners):
 
     fmr_array = []
     fnmr_array = []
-    for treshold in tresholds:
-        test_y, predicted_y = postprocess.unify_y_column_format(
-            test_y_raw, tresholds, selected_owners, treshold)
+    test_y = [1 if i in selected_owners else 0 for i in test_y_raw]
 
-        fmr_array.append(fmr_score(test_y, predicted_y))
-        fnmr_array.append(fnmr_score(test_y, predicted_y))
+    # predicted_y = [0]*len(tresholds)
+    # for i in range(len(tresholds)):
+    #     predicted_y[i] = 1
+    #     fmr_array.append(fmr_score(test_y, predicted_y))
+    #     fnmr_array.append(fnmr_score(test_y, predicted_y))
+
+    for treshold in tresholds:
+       predicted_y = [1 if i <= treshold else 0 for i in tresholds]
+       fmr_array.append(fmr_score(test_y, predicted_y))
+       fnmr_array.append(fnmr_score(test_y, predicted_y))
 
     line1 = LineString(list(zip(tresholds, fmr_array)))
     line2 = LineString(list(zip(tresholds, fnmr_array)))
@@ -72,22 +78,15 @@ def cross_validate(x_columns, y_column, df_raw_train, df_raw_val, df_raw_test, o
 
     test_eer_array = []
     val_eer_array = []
-    train_eer_array = []
 
     for selected_owners in owners:
         df_train, df_val, df_test = split.adapt_dfs_to_users(
             df_raw_train, df_raw_val, df_raw_test, selected_owners, y_column, kind_of_patten)
             
-        if df_train.empty:
+        if df_train.empty or len(df_train)<15 or df_val.empty or df_test.empty:
             continue
         predicted_train, predicted_val, predicted_test = models.use_model(
             model, [df_train, df_val, df_test], x_columns, params)
-
-        ground_truth_train, predicted_train = postprocess.adapt_columns_for_evaluation(
-            df_train[[y_column, 'id']], predicted_train, y_column, predict_based_on_whole_pattern)
-
-        train_eer_array.append(get_eer(
-            ground_truth_train, predicted_train, selected_owners))
 
         ground_truth_val, predicted_val = postprocess.adapt_columns_for_evaluation(
             df_val[[y_column, 'id']], predicted_val, y_column, predict_based_on_whole_pattern)
@@ -99,7 +98,7 @@ def cross_validate(x_columns, y_column, df_raw_train, df_raw_val, df_raw_test, o
         test_eer_array.append(get_eer(
             ground_truth_test, predicted_test, selected_owners))
 
-    train_eer = mean(train_eer_array)
+    train_eer = None
     val_eer = mean(val_eer_array)
     test_eer = mean(test_eer_array)
     return train_eer, val_eer, test_eer
@@ -115,7 +114,7 @@ def cross_validate_with_ensemble(models_dict, models_to_use, selected_features_d
         df_train, df_val, df_test = split.adapt_dfs_to_users(
             df_raw_train, df_raw_val, df_raw_test, selected_owners, y_column, kind_of_patten)
 
-        if df_train.empty:
+        if df_train.empty or len(df_train)<15 or df_val.empty or df_test.empty:
             continue
         predicted_trains = []
         predicted_vals = []
@@ -193,8 +192,9 @@ def cross_validate_with_ensemble3(models_dict, model_to_use, selected_features_d
     for selected_owners in owners:
         df_train, df_val, df_test = split.adapt_dfs_to_users(
             df_raw_train, df_raw_val, df_raw_test, selected_owners, y_column, kind_of_patten)
-        if df_train.empty:
+        if df_train.empty or len(df_train)<15 or df_val.empty or df_test.empty:
             continue
+
         df_trains = split_by_owners(
             df_train, y_column, ensemble_based_on_users)
 
@@ -242,6 +242,7 @@ def cross_validate_with_ensemble3(models_dict, model_to_use, selected_features_d
 
         # train_eer_array.append(get_eer(
         #     ground_truth_train, predicted_train, selected_owners))
+
         val_eer_array.append(get_eer(
             ground_truth_val, predicted_val, selected_owners))
         test_eer_array.append(get_eer(

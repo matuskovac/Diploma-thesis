@@ -6,7 +6,7 @@ from sklearn.feature_selection import RFE, RFECV
 
 from packages.config import config
 from packages.models.models import RandomForestClassifierWithCoef
-
+from packages.notification import notificate
 
 x_columns = config.X_COLUMNS
 y_column = config.Y_COLUMNS
@@ -25,7 +25,7 @@ models = [RandomForestClassifierWithCoef(
 
 for model in models:
     print(model)
-    rfe = RFE(model, n_features_to_select=1)
+    rfe = RFE(model, n_features_to_select=1, verbose=2)
     fit = rfe.fit(df_raw_train[x_columns], df_raw_train[y_column])
 
     for number in [x * 10 for x in list(range(1, 15))]:
@@ -37,7 +37,7 @@ for model in models:
             x_columns) if j not in indexes_to_delete]
         selected_features_dict[str(number) + "_" +
                                str(model)] = selected_features
-
+    print("-------\nCV\n---------")
     rfe = RFECV(estimator=model, verbose=2)
     fit = rfe.fit(df_raw_train[x_columns], df_raw_train[y_column])
 
@@ -55,5 +55,12 @@ for k in selected_features_dict.keys():
     selected_features_dict_new[new_key] = selected_features_dict[k]
 
 
-with open('./packages/config/selected_features2.pickle', 'wb') as f:
+with open('./packages/config/selected_features_cont.pickle', 'wb') as f:
     pickle.dump(selected_features_dict_new, f)
+
+try:
+    notificate.sendnotificate(message='DONE!')
+except:
+    print("Notificate not sent!")
+finally:
+    print("Job done!")

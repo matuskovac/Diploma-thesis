@@ -14,15 +14,16 @@ user_column = config.USER_COLUMN
 path_to_featutes = config.PATH_TO_FEATURES
 columns_to_identificate_features = config.get_columns_to_identify_features()
 delete_nan_features = config.DELETE_NAN_FEATURES
-
+print(path_to_raw_data)
+print(path_to_featutes)
 
 touch_data = pd.read_csv(path_to_raw_data + 'touch.csv', sep=',')
 acc_data = pd.read_csv(path_to_raw_data + 'linear_accelerometer.csv', sep=',')
 gyro_data = pd.read_csv(path_to_raw_data + 'gyroscope.csv', sep=',')
 
-touch_data["id"] = touch_data["pattern_id"].astype(str) + touch_data["device"]
-acc_data["id"] = acc_data["pattern_id"].astype(str) + acc_data["device"]
-gyro_data["id"] = gyro_data["pattern_id"].astype(str) + gyro_data["device"]
+touch_data["id"] = touch_data["pattern_id"].astype(str) + touch_data["device"].astype(str)
+acc_data["id"] = acc_data["pattern_id"].astype(str) + acc_data["device"].astype(str)
+gyro_data["id"] = gyro_data["pattern_id"].astype(str) + gyro_data["device"].astype(str)
 
 if compute_features_for_segment:
     touch_data["id"] += touch_data['segment'].astype(str)
@@ -96,7 +97,7 @@ all_features = touch_features.merge(acc_features, on='user', how='inner').merge(
     gyro_features, on='user', how='inner')
 preprocess.normalize_columns_names(all_features)
 
-# touch_features.to_csv(path_to_featutes + "touch_feautures.csv", encoding='utf-8', index=False)
-# acc_features.to_csv(path_to_featutes + "acc_feautures.csv", encoding='utf-8', index=False)
-# gyro_features.to_csv(path_to_featutes + "gyro_feautures.csv", encoding='utf-8', index=False)
-# all_features.to_csv(path_to_featutes + "all_feautures.csv", encoding='utf-8', index=False)
+touch_features.to_csv(path_to_featutes + "touch_feautures.csv", encoding='utf-8', index=False)
+acc_features.to_csv(path_to_featutes + "acc_feautures.csv", encoding='utf-8', index=False)
+gyro_features.to_csv(path_to_featutes + "gyro_feautures.csv", encoding='utf-8', index=False)
+all_features.to_csv(path_to_featutes + "all_feautures.csv", encoding='utf-8', index=False)
