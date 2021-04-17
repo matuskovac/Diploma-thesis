@@ -7,3 +7,4 @@ lsanomaly
 matplotlib
 tensorflow
 notify-run
+auto_tqdm
